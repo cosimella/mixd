@@ -2,9 +2,9 @@
 session_start();
 include "util/dbutil.php";
 
-// 1. PARAMETER AUS URL HOLEN
 $recipeId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $servingsCount = isset($_GET['servings']) ? (int) $_GET['servings'] : 1;
+
 if ($servingsCount < 1) $servingsCount = 1;
 
 if ($recipeId <= 0) {
@@ -12,7 +12,6 @@ if ($recipeId <= 0) {
     exit;
 }
 
-// 2. HAUPTDATEN LADEN
 $stmtRecipe = $conn->prepare("SELECT r.*, u.benutzername, u.is_barkeeper FROM recipes r JOIN users u ON r.created_by = u.userid WHERE r.recipe_id = ?");
 $stmtRecipe->bind_param("i", $recipeId);
 $stmtRecipe->execute();
@@ -22,7 +21,6 @@ if (!$recipeData) {
     die("Drink nicht gefunden.");
 }
 
-// --- DURCHSCHNITTS-STERNE BERECHNEN ---
 $stmtAvg = $conn->prepare("SELECT AVG(stars) as average, COUNT(*) as total FROM ratings WHERE recipe_id = ?");
 $stmtAvg->bind_param("i", $recipeId);
 $stmtAvg->execute();
@@ -30,31 +28,26 @@ $ratingStats = $stmtAvg->get_result()->fetch_assoc();
 $averageStars = round($ratingStats['average'], 1);
 $totalRatings = $ratingStats['total'];
 
-// --- COMMUNITY FOTOS LADEN ---
 $stmtCommPics = $conn->prepare("SELECT rating_image FROM ratings WHERE recipe_id = ? AND rating_image IS NOT NULL ORDER BY created_at DESC");
 $stmtCommPics->bind_param("i", $recipeId);
 $stmtCommPics->execute();
 $communityPhotos = $stmtCommPics->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// 3. ZUTATEN LADEN
 $stmtIng = $conn->prepare("SELECT ri.amount, ri.unit, i.ingredient_name FROM recipe_ingredients ri JOIN ingredients i ON ri.ingredient_id = i.ingredient_id WHERE ri.recipe_id = ?");
 $stmtIng->bind_param("i", $recipeId);
 $stmtIng->execute();
 $ingredientsList = $stmtIng->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// 4. ZUBEREITUNGSSCHRITTE LADEN
 $stmtSteps = $conn->prepare("SELECT instruction FROM recipe_steps WHERE recipe_id = ? ORDER BY step_number ASC");
 $stmtSteps->bind_param("i", $recipeId);
 $stmtSteps->execute();
 $preparationSteps = $stmtSteps->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// 5. REZEPTBILDER LADEN
 $stmtImg = $conn->prepare("SELECT image_path FROM recipe_images WHERE recipe_id = ?");
 $stmtImg->bind_param("i", $recipeId);
 $stmtImg->execute();
 $recipeImages = $stmtImg->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// --- KOMBINIEREN: Originalbilder + Community Bilder ---
 $allImages = [];
 foreach ($recipeImages as $img) {
     $allImages[] = $img['image_path'];
@@ -63,13 +56,12 @@ foreach ($communityPhotos as $cp) {
     $allImages[] = $cp['rating_image'];
 }
 
-// Falls gar kein Bild da ist (weder Original noch Community), Platzhalter setzen
 if (empty($allImages)) {
     $allImages[] = 'resources/images/placeholders/platzhalter2.png';
 }
 
-// 6. FAVORITEN-STATUS
 $isUserFavorite = false;
+
 if (isset($_SESSION['userid'])) {
     $currentUserId = $_SESSION['userid'];
     $stmtFav = $conn->prepare("SELECT * FROM favorites WHERE user_id = ? AND recipe_id = ?");
