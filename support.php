@@ -1,15 +1,11 @@
 <?php
 session_start();
-
-// Datenbank-Hilfsfunktionen einbinden
-include "util/dbutil.php"; 
 ?>
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <?php 
-    // Einbinden der globalen Header-Ressourcen (CSS, Meta-Tags)
     include "includes/head-includes.php"; 
     ?>
     <title>Kontakt - Cocktail Welt</title>
@@ -17,7 +13,6 @@ include "util/dbutil.php";
 
 <body class="bg-light">
     <?php 
-    // Einbinden der Navigationsleiste
     include "includes/navbar.php"; 
     ?>
 
@@ -68,7 +63,6 @@ include "util/dbutil.php";
     </main>
 
     <?php 
-    // Einbinden des Seitenfußes
     include "includes/footer.php"; 
     ?>
 </body>
