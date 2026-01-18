@@ -6,7 +6,6 @@ include "util/auth_check.php";
 $currentUserId = $_SESSION['userid'];
 $targetRecipeId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// 1. SICHERHEITS-CHECK: Gehört das Rezept dem User?
 $queryBaseData = "SELECT * FROM recipes WHERE recipe_id = ? AND created_by = ?";
 $statementBase = $conn->prepare($queryBaseData);
 $statementBase->bind_param("ii", $targetRecipeId, $currentUserId);
@@ -17,7 +16,6 @@ if (!$recipeData) {
     die("Kein Zugriff auf dieses Rezept.");
 }
 
-// 2. SPEICHER-LOGIK (Wird ausgeführt, wenn "Speichern" geklickt wird)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
     
     $recipeName = $_POST['recipe_name'];
@@ -25,18 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
     $anleitung = $_POST['anleitung'];
     $selectedCategories = $_POST['categories'] ?? [];
 
-    // A. Basis-Daten updaten
     $updateStmt = $conn->prepare("UPDATE recipes SET recipe_name = ?, beschreibung = ?, anleitung = ? WHERE recipe_id = ?");
     $updateStmt->bind_param("sssi", $recipeName, $beschreibung, $anleitung, $targetRecipeId);
     $updateStmt->execute();
 
-    // B. Kategorien synchronisieren (Alte löschen, neue rein)
     $conn->query("DELETE FROM recipe_categories WHERE recipe_id = $targetRecipeId");
     foreach ($selectedCategories as $catId) {
         $conn->query("INSERT INTO recipe_categories (recipe_id, category_id) VALUES ($targetRecipeId, $catId)");
     }
 
-    // C. Zutaten synchronisieren
     $conn->query("DELETE FROM recipe_ingredients WHERE recipe_id = $targetRecipeId");
     $amounts = $_POST['amount'] ?? [];
     $units = $_POST['unit'] ?? [];
@@ -44,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
 
     foreach ($ingredients as $idx => $ingName) {
         if (!empty(trim($ingName))) {
-            // Zutat-ID finden oder neu anlegen
+           
             $conn->query("INSERT IGNORE INTO ingredients (ingredient_name) VALUES ('$ingName')");
             $res = $conn->query("SELECT ingredient_id FROM ingredients WHERE ingredient_name = '$ingName'");
             $ingId = $res->fetch_assoc()['ingredient_id'];
@@ -55,21 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
         }
     }
 
-    // D. BILDER LÖSCHEN
     if (!empty($_POST['delete_images'])) {
         foreach ($_POST['delete_images'] as $imgId) {
             $imgId = (int)$imgId;
-            // Pfad holen, um Datei physisch zu löschen
             $res = $conn->query("SELECT image_path FROM recipe_images WHERE image_id = $imgId");
             $pathData = $res->fetch_assoc();
             if ($pathData && file_exists($pathData['image_path'])) {
-                unlink($pathData['image_path']); // Datei vom Server löschen
+                unlink($pathData['image_path']); 
             }
             $conn->query("DELETE FROM recipe_images WHERE image_id = $imgId");
         }
     }
 
-    // E. NEUE BILDER HOCHLADEN
     if (!empty($_FILES['new_images']['name'][0])) {
         $uploadPath = 'resources/uploads/recipes/';
         foreach ($_FILES['new_images']['tmp_name'] as $index => $tmpName) {
@@ -84,12 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
         }
     }
 
-    // Erfolg! Seite neu laden
     header("Location: recipe.php?id=$targetRecipeId&msg=updated");
     exit;
 }
 
-// (Hier folgen deine bestehenden Querys für die Anzeige...)
 $queryAllCategories = $conn->query("SELECT * FROM categories ORDER BY category_name ASC");
 $categoryList = $queryAllCategories->fetch_all(MYSQLI_ASSOC);
 
