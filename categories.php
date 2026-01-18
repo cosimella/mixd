@@ -10,8 +10,7 @@ if (isset($_GET['kategorie'])) {
 $foundRecipesList = [];
 
 if ($selectedCategory !== "") {
-    // SQL Abfrage mit JOINs: Wir verknüpfen Rezepte, Ersteller (für Barkeeper-Status), 
-    // Kategorien und Bilder.
+
     $sqlFetchByCategory = "SELECT 
                 r.recipe_id, 
                 r.recipe_name, 
@@ -30,14 +29,12 @@ if ($selectedCategory !== "") {
     $statementLookup->execute();
     $queryResult = $statementLookup->get_result();
 
-    // Datensätze in ein Array übertragen
     while ($recipeRow = $queryResult->fetch_assoc()) {
         $foundRecipesList[] = $recipeRow;
     }
     $statementLookup->close();
 }
 
-// 3. Infotexte für die Kategorien (Mapping von Name zu Text)
 $categoryDescriptions = [
     "Alkoholfrei" => "Leckere Drinks ohne Prozente.",
     "Sommer"      => "Erfrischende Cocktails für heiße Tage.",
@@ -45,8 +42,8 @@ $categoryDescriptions = [
     "Erfrischend" => "Perfekt für eine kleine Abkühlung."
 ];
 
-// Standard-Beschreibung festlegen
 $displayDescription = "Entdecke unsere Rezepte.";
+
 if (isset($categoryDescriptions[$selectedCategory])) {
     $displayDescription = $categoryDescriptions[$selectedCategory];
 }
@@ -80,7 +77,6 @@ if (isset($categoryDescriptions[$selectedCategory])) {
                 <?php foreach ($foundRecipesList as $rezept): ?>
                     <?php 
                     $showIngredients = false; 
-                    // Hinweis: In der recipe-card.php muss die Variable $rezept heißen
                     include "includes/recipe-card.php"; 
                     ?>
                 <?php endforeach; ?>
