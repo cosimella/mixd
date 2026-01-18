@@ -1,10 +1,10 @@
-/* Eingabefelder (Suche, Login, Bewertung) */
+
 .form-control, .form-select {
     font-family: 'Quicksand', sans-serif;
     font-weight: 500;
-    border-radius: 12px; /* Etwas runder für den weichen Look */
+    border-radius: 12px; 
     padding: 10px 18px;
-    border: 2px solid #f0f0f0; /* Hellgrauer, weicher Rahmen */
+    border: 2px solid #f0f0f0; 
     transition: all 0.2s ease-in-out;
     color: var(--secondary-accent);
 }
@@ -16,7 +16,6 @@
     outline: none;
 }
 
-/* Speziell für das Suchen-Feld in der Navbar (Pill-Look) */
 .input-group.rounded-pill .form-control {
     border-radius: 50px 0 0 50px;
 }
@@ -24,10 +23,9 @@
     border-radius: 0 50px 50px 0;
 }
 
-/* Upload-Box (z.B. für Rezeptbilder oder Profilbild) */
 .upload-box { 
     border: 2px dashed #d1d1d1 !important; 
-    border-radius: 20px; /* Konsistent mit den Rezeptkarten */
+    border-radius: 20px; 
     background-color: #fafafa;
     padding: 30px;
     text-align: center;
@@ -37,11 +35,10 @@
 
 .upload-box:hover { 
     border-color: var(--primary-accent) !important; 
-    background-color: #fffaf9; /* Hauch von Koralle im Hintergrund */
+    background-color: #fffaf9; 
     transform: translateY(-2px);
 }
 
-/* Styling für die Sterne-Auswahl (Dropdown) */
 .form-select {
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ff6f61' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");

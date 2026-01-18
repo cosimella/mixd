@@ -60,7 +60,6 @@ include "includes/navbar.php";
 </main>
 
 <?php 
-// Der Footer enthält meist rechtliche Links und wird ebenfalls zentral eingebunden
 include "includes/footer.php"; 
 ?>
 </body>

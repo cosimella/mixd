@@ -1,6 +1,6 @@
 :root {
-    --primary-accent: #ff6f61;   /* Koralle */
-    --secondary-accent: #5e4352; /* Beere */
+    --primary-accent: #ff6f61;   
+    --secondary-accent: #5e4352;
     --muted-teal: #587b7f;
     --bg-light: #F7F7F7;
     --text-dark: #333333;
@@ -8,28 +8,27 @@
 
 body {
     font-family: 'Quicksand', sans-serif;
-    font-weight: 500; /* Quicksand braucht etwas Gewicht, um gut lesbar zu sein */
+    font-weight: 500; 
     color: var(--secondary-accent);
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    line-height: 1.6; /* Mehr Platz zwischen den Zeilen für bessere Lesbarkeit */
+    line-height: 1.6; 
 }
 
-/* Überschriften: Schön fett und modern */
 h1, h2, h3, h4, h5, h6, .navbar-brand {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700 !important;
     letter-spacing: -0.01em;
 }
 
-/* Bootstrap-Überschreibungen */
+
 .text-primary, .text-accent { color: var(--primary-accent) !important; }
 .bg-primary { background-color: var(--primary-accent) !important; }
 .border-primary { border-color: var(--primary-accent) !important; }
 
-/* Buttons im MIXD-Look */
+
 .btn-primary {
     background-color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
@@ -48,7 +47,7 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     box-shadow: 0 4px 12px rgba(255, 111, 97, 0.2);
 }
 
-/* Links */
+
 a.text-primary, 
 .text-primary {
     color: var(--primary-accent) !important;
@@ -60,7 +59,6 @@ a.text-primary:hover {
     color: var(--secondary-accent) !important;
 }
 
-/* Portionen-Button (Outline) */
 .btn-outline-primary {
     color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
@@ -80,7 +78,7 @@ a.text-primary:hover {
     box-shadow: 0 0 0 0.25rem rgba(255, 111, 97, 0.25) !important;
 }
 
-/* Layout-Hilfen */
+
 .custom-container { padding: 0 80px; }
 @media (max-width: 576px) { .custom-container { padding: 0 12px; } }
 
@@ -89,7 +87,7 @@ html {
     overflow-y: scroll;
 }
     
-/* Anwendung der Haupt-Schriftart auf das gesamte Projekt */
+
 body {
     font-family: 'Lexend', sans-serif;
     -webkit-font-smoothing: antialiased;

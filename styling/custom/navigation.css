@@ -1,8 +1,8 @@
-/* --- NAVBAR LINKS --- */
+
 .nav-link {
     color: var(--secondary-accent) !important;
     font-family: 'Quicksand', sans-serif;
-    font-weight: 600; /* Quicksand braucht etwas Gewicht in der Nav */
+    font-weight: 600; 
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
 }
@@ -13,20 +13,17 @@
     color: var(--primary-accent) !important;
 }
 
-/* --- DROPDOWN MENÜ BOX --- */
 .dropdown-menu {
-    border-radius: 15px; /* Runde Ecken passend zur Schrift */
+    border-radius: 15px; 
     border: none;
-    box-shadow: 0 10px 25px rgba(94, 67, 82, 0.1) !important; /* Beere-Schatten */
-    padding: 0.5rem;
+    box-shadow: 0 10px 25px rgba(94, 67, 82, 0.1) !important; 
 }
 
-/* --- DROPDOWN ITEMS --- */
 .dropdown-item {
     color: var(--secondary-accent) !important;
     font-family: 'Quicksand', sans-serif;
     font-weight: 500;
-    border-radius: 10px; /* Abgerundete Auswahl-Balken */
+    border-radius: 10px; 
     padding: 0.6rem 1.2rem;
     margin-bottom: 2px;
 }
@@ -35,13 +32,12 @@
 .dropdown-item:active, 
 .dropdown-item:focus,
 .dropdown-item.active {
-    background-color: #fff5f4 !important; /* Ganz zartes Koralle statt nur Grau */
+    background-color: #fff5f4 !important; 
     color: var(--primary-accent) !important;
     box-shadow: none !important;
     outline: none !important;
 }
 
-/* --- NAVBAR BRAND --- */
 .navbar-brand { 
     color: var(--secondary-accent) !important; 
     font-weight: 700;
@@ -49,31 +45,27 @@
 }
 
 .navbar-brand span {
-    color: var(--primary-accent); /* MIXD Name in Koralle */
+    color: var(--primary-accent); 
 }
 
-/* --- SUCHE SPEZIAL --- */
 .input-group-sm .form-control {
     font-family: 'Quicksand', sans-serif;
     border: 1px solid #eee;
 }
 
-/* Der kleine Pfeil (Caret) im Dropdown - farblich angepasst */
 .dropdown-toggle::after {
     color: var(--primary-accent);
     vertical-align: 0.2em;
 }
 
-
-/* --- LOGO TEXT STYLING (Light 300 & Groß) --- */
 .brand-text {
     font-family: 'Quicksand', sans-serif;
-    font-weight: 300;         /* Extra dünn wie gewünscht */
-    font-size: 2.2rem;       /* Deutlich größer für die Wirkung */
+    font-weight: 300;         
+    font-size: 2.2rem;     
     color: var(--secondary-accent);
-    letter-spacing: -1px;     /* Zieht alle Buchstaben näher zusammen */
+    letter-spacing: -1px;     
     line-height: 1;
     display: flex;
     align-items: center;
-    text-transform: uppercase; /* Wirkt bei dünnen Schriften oft edler */
+    text-transform: uppercase; 
 }
