@@ -1,3 +1,14 @@
+<?php
+/**
+ * Empty State Template
+ * Nutzt den Null-Coalescing-Operator (??), um Fehler zu vermeiden, 
+ * falls die Variablen im Hauptskript nicht definiert wurden.
+ */
+$displayIcon  = $displayIcon  ?? 'bi-search'; 
+$displayTitle = $displayTitle ?? 'Nichts gefunden';
+$displayText  = $displayText  ?? 'Leider konnten wir hierzu keine Einträge finden.';
+?>
+
 <div class="col-12">
     <div class="empty-state-container text-center py-5">
         
