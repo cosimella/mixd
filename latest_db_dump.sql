@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 07. Jan 2026 um 08:04
+-- Erstellungszeit: 18. Jan 2026 um 21:11
 -- Server-Version: 10.4.28-MariaDB
 -- PHP-Version: 8.2.4
 
@@ -41,7 +41,8 @@ CREATE TABLE `barkeeper_applications` (
 --
 
 INSERT INTO `barkeeper_applications` (`app_id`, `userid`, `full_name`, `document_path`, `status`, `created_at`) VALUES
-(1, 2, 'John Pork', 'resources/uploads/verification/verify_2_1767661414.webp', 'approved', '2026-01-06 01:03:34');
+(1, 2, 'John Pork', 'resources/uploads/verification/verify_2_1767661414.webp', 'approved', '2026-01-06 01:03:34'),
+(2, 4, 'Cosima Kostenzer', 'resources/uploads/verification/verify_4_1767781663.jpeg', 'rejected', '2026-01-07 10:27:43');
 
 -- --------------------------------------------------------
 
@@ -84,7 +85,11 @@ CREATE TABLE `favorites` (
 --
 
 INSERT INTO `favorites` (`user_id`, `recipe_id`, `created_at`) VALUES
-(2, 11, '2026-01-06 00:54:04');
+(2, 5, '2026-01-17 14:43:38'),
+(5, 1, '2026-01-16 22:39:53'),
+(5, 2, '2026-01-18 19:18:20'),
+(5, 4, '2026-01-18 19:36:55'),
+(5, 7, '2026-01-18 19:09:43');
 
 -- --------------------------------------------------------
 
@@ -102,60 +107,40 @@ CREATE TABLE `ingredients` (
 --
 
 INSERT INTO `ingredients` (`ingredient_id`, `ingredient_name`) VALUES
-(64, '1 Barlöffel Zucker'),
-(18, '100ml Ananassaft'),
-(45, '10ml Mandelsirup'),
-(76, '120ml Orangensaft'),
-(52, '150ml Ginger Beer'),
-(69, '15ml Gin'),
-(44, '15ml Orangenlikör'),
-(72, '15ml Tequila'),
-(73, '15ml Triple Sec'),
-(71, '15ml weißer Rum'),
-(70, '15ml Wodka'),
-(63, '2 Spritzer Angostura Bitter'),
-(13, '2 TL Zucker'),
-(46, '20ml frischer Limettensaft'),
-(77, '20ml Grenadine'),
-(58, '20ml Kaffeelikör'),
-(51, '20ml Limettensaft'),
-(55, '20ml Zuckersirup'),
-(49, '30ml Campari'),
-(57, '30ml frischer Espresso'),
-(47, '30ml Gin'),
-(12, '30ml Limettensaft'),
-(48, '30ml Roter Wermut'),
-(54, '30ml Zitronensaft'),
-(17, '50ml Kokoscreme'),
-(11, '50ml weißer Rum'),
-(22, '50ml Wodka'),
-(66, '60ml Aperol'),
-(53, '60ml Bourbon Whiskey'),
-(43, '60ml brauner Rum'),
-(75, '60ml Tequila'),
-(59, '60ml weißer Rum'),
-(67, '90ml Prosecco'),
-(20, 'Ananasstück zum Garnieren'),
-(30, 'Banane'),
-(21, 'Cocktailkirsche zum Garnieren'),
-(74, 'Cola'),
-(25, 'e'),
-(19, 'Eiswürfel'),
-(29, 'Erdbeeren'),
-(31, 'frische Minzblätter'),
-(33, 'Honig'),
-(1, 'Limetten'),
-(14, 'Minzblätter'),
-(32, 'Naturjoghurt'),
-(10, 'rtert'),
-(68, 'Schuss Mineralwasser'),
-(65, 'Schuss Soda'),
-(15, 'Soda'),
-(28, 'we'),
-(6, 'wewerwe'),
-(3, 'wterz'),
-(2, 'wtwet'),
-(35, 'Zitronensaft');
+(61, '	 Kirschsaft'),
+(7, 'Ananassaft'),
+(43, 'Angostura Bitter'),
+(14, 'Aperol'),
+(40, 'Bourbon Whiskey'),
+(19, 'Brombeerlikör'),
+(11, 'Campari'),
+(8, 'Cocktailkirsche'),
+(62, 'Eiswürfel'),
+(44, 'Eiweiß'),
+(101, 'Espresso'),
+(103, 'Espressobohnen'),
+(21, 'frische Brombeeren'),
+(9, 'Gin'),
+(13, 'Ginger Beer'),
+(110, 'Grenadine'),
+(83, 'Kaffeelikör'),
+(6, 'Kokoscreme'),
+(2, 'Limettensaft'),
+(59, 'Malibu Coconut Rum'),
+(60, 'Maracujasaft'),
+(4, 'Minzblätter'),
+(108, 'Orangensaft'),
+(112, 'Orangenscheibe'),
+(15, 'Prosecco'),
+(3, 'Rohrzucker'),
+(10, 'Roter Wermut'),
+(5, 'Soda'),
+(58, 'Vodka'),
+(1, 'Weißer Rum'),
+(12, 'Wodka'),
+(17, 'Zitronensaft'),
+(20, 'Zitronenscheibe'),
+(18, 'Zuckersirup');
 
 -- --------------------------------------------------------
 
@@ -167,18 +152,19 @@ CREATE TABLE `ratings` (
   `userid` int(10) UNSIGNED NOT NULL,
   `recipe_id` int(10) UNSIGNED NOT NULL,
   `stars` tinyint(4) NOT NULL CHECK (`stars` between 1 and 5),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `rating_image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Daten für Tabelle `ratings`
 --
 
-INSERT INTO `ratings` (`userid`, `recipe_id`, `stars`, `created_at`) VALUES
-(2, 10, 3, '2026-01-06 00:45:01'),
-(2, 11, 1, '2026-01-06 00:41:04'),
-(2, 20, 5, '2026-01-06 00:43:40'),
-(3, 11, 5, '2026-01-06 00:39:12');
+INSERT INTO `ratings` (`userid`, `recipe_id`, `stars`, `created_at`, `rating_image`) VALUES
+(2, 1, 5, '2026-01-18 13:46:52', 'resources/uploads/ratings/rate_1_2_1768744012.png'),
+(2, 5, 4, '2026-01-18 14:07:13', NULL),
+(5, 1, 4, '2026-01-18 18:37:55', NULL),
+(6, 8, 3, '2026-01-18 13:28:41', 'resources/uploads/ratings/rate_8_6_1768743133.webp');
 
 -- --------------------------------------------------------
 
@@ -200,19 +186,16 @@ CREATE TABLE `recipes` (
 --
 
 INSERT INTO `recipes` (`recipe_id`, `recipe_name`, `beschreibung`, `anleitung`, `created_by`, `created_at`) VALUES
-(10, 'Mojito', 'Klassischer, erfrischender Minz-Cocktail aus Kuba.', 'Limetten auspressen, Minze leicht zerdrücken, Zucker & Rum hinzufügen, Mit Soda auffüllen, Eiswürfel hinzufügen, Umrühren', 2, '2026-01-05 01:11:18.985594'),
-(11, 'Piña Colada', 'Ein tropischer Klassiker mit Ananas, Kokos und Rum – perfekt für den Sommer.', 'Eiswürfel in den Mixer geben, Rum, Kokoscreme und Ananassaft hinzufügen, Alles mixen bis cremig, In ein Glas füllen, Mit Ananasstück und Cocktailkirsche garnieren, Sofort servieren', 2, '2026-01-05 15:46:23.681071'),
-(20, 'Sommerlicher Erdbeer-Minz-Smoothie', 'Ein erfrischender, fruchtiger Smoothie mit süßen Erdbeeren und frischer Minze – perfekt für heiße Sommertage.', 'Erdbeeren waschen und halbieren, Banane schälen und in Stücke schneiden, Minzblätter grob hacken, alle Zutaten in einen Mixer geben, gut pürieren bis eine cremige Konsistenz entsteht, bei Bedarf mit Honig nachsüßen, in Gläser füllen, mit Minzblatt garnieren, sofort servieren', 2, '2026-01-05 17:17:48.651291'),
-(21, 'Mai Tai', 'Der ultimative Tiki-Klassiker mit intensivem Mandelaroma.', 'Rum, Limette und Mandelsirup shaken, Auf Crushed Ice abseihen, Mit Minze garnieren', 2, '2026-01-06 01:17:39.359470'),
-(22, 'Negroni', 'Ein herber, italienischer Aperitif für Genießer.', 'Gin, Vermouth und Campari mischen, Auf Eis rühren, Orangenzeste hinzufügen', 2, '2026-01-06 01:17:39.376650'),
-(23, 'Moscow Mule', 'Erfrischend scharf durch Ingwer und Limette.', 'Wodka und Limette ins Glas, Eis hinzufügen, Mit Ginger Beer auffüllen', 2, '2026-01-06 01:17:39.384748'),
-(24, 'Whiskey Sour', 'Die perfekte Balance zwischen süß und sauer.', 'Whiskey, Zitrone und Zucker shaken, Eiswürfel dazu, In den Tumbler abseihen', 2, '2026-01-06 01:17:39.392223'),
-(25, 'Espresso Martini', 'Der perfekte Wachmacher für die Nacht.', 'Espresso kochen und kühlen, Mit Wodka und Likör hart shaken, In Martini-Schale füllen', 2, '2026-01-06 01:17:39.396060'),
-(26, 'Daiquiri', 'Minimalistisch und erfrischend – Rum pur erleben.', 'Rum, Limette, Sirup in den Shaker, Eiskalt shaken, Ohne Eis servieren', 2, '2026-01-06 01:17:39.400688'),
-(27, 'Old Fashioned', 'Der zeitlose Klassiker unter den Whiskey-Drinks.', 'Zucker mit Bitter auflösen, Whiskey und Eis zugeben, Lange rühren', 2, '2026-01-06 01:17:39.405001'),
-(28, 'Aperol Spritz', 'Der Inbegriff des italienischen Sommers.', 'Glas mit Eis füllen, Prosecco und Aperol eingießen, Spritzer Soda dazu', 2, '2026-01-06 01:17:39.407723'),
-(29, 'Long Island Ice Tea', 'Vielseitig, stark und überraschend erfrischend.', 'Alle 5 klaren Geister mischen, Zitronensaft dazu, Mit Cola auffüllen', 2, '2026-01-06 01:17:39.411489'),
-(30, 'Tequila Sunrise', 'Wunderschöner Farbverlauf wie ein Sonnenaufgang.', 'Tequila und O-Saft mischen, Eis ins Glas, Grenadine vorsichtig einsinken lassen', 2, '2026-01-06 01:17:39.416825');
+(1, 'Mojito', 'Klassischer, erfrischender Minz-Cocktail aus Kuba.', 'Limetten auspressen\r\nMinze leicht zerdrücken\r\nZucker & Rum hinzufügen\r\nMit Soda auffüllen\r\nEiswürfel hinzufügen\r\nUmrühren', 2, '2026-01-16 21:36:24.252499'),
+(2, 'Piña Colada', 'Tropischer Klassiker mit Ananas und Kokos.', 'Eis mixen Rum, Kokoscreme und Saft dazu Cremig mixen Garnieren', 2, '2026-01-16 21:36:24.264904'),
+(3, 'Negroni', 'Ein herber, italienischer Aperitif für Genießer.', 'Gin, Vermouth und Campari mischen Auf Eis rühren Orangenzeste hinzufügen', 2, '2026-01-16 21:36:24.273908'),
+(4, 'Moscow Mule', 'Erfrischend scharf durch Ingwer und Limette.', 'Wodka und Limette ins Glas Eis hinzufügen Mit Ginger Beer auffüllen', 2, '2026-01-16 21:36:24.278508'),
+(5, 'Aperol Spritz', 'Der Inbegriff des italienischen Sommers.', 'Eis ins Glas Prosecco und Aperol zugeben Spritzer Soda', 2, '2026-01-16 21:36:24.281448'),
+(6, 'Bramble', 'Ein erfrischender, balancierter Gin-Drink mit einer fruchtigen Brombeer-Note. Perfekt serviert auf Crushed Ice.', 'Gin, Zitronensaft und Zuckersirup in einen Shaker geben.\r\n\r\nMit Eiswürfeln füllen und ca. 10-15 Sekunden kräftig schütteln.\r\n\r\nEin Glas (Tumbler) mit Crushed Ice füllen und den Mix durch ein Sieb eingießen.\r\n\r\nDen Brombeerlikör vorsichtig über das Eis träufeln, sodass ein schöner Farbeffekt entsteht.\r\n\r\nMit Zitronenscheibe und Brombeeren garnieren.', 5, '2026-01-16 21:57:06.847334'),
+(7, 'Whiskey Sour', 'Ein zeitloser Favorit. Die Kombination aus Bourbon, frischem Zitronensaft und einem Hauch Süße sorgt für ein seidiges Mundgefühl und perfekten Geschmack.', 'Alle flüssigen Zutaten in einen Shaker geben.\r\n\r\nZuerst ohne Eis kräftig schütteln (Dry Shake), um das Eiweiß aufzuschäumen.\r\n\r\nEiswürfel hinzufügen und erneut ca. 15 Sekunden eiskalt schütteln.\r\n\r\nDurch ein Sieb in einen mit frischem Eis gefüllten Tumbler abseihen.\r\n\r\nMit einer Cocktailkirsche garnieren.', 5, '2026-01-16 22:38:50.641994'),
+(8, 'Maracuja Traum', 'Sommerlicher Cocktail für dem fast immer alles Zuhause ist!', 'Eiswürfel in das Glas füllen. \r\nErst Malibu, danach Wodka in das Glas geben und mit Maracujasaft auffüllen. \r\nEinen Schuss Kirsch- oder Cranberrysaft dazugeben. Dadurch entsteht ein leichter Rotschleier.', 2, '2026-01-18 13:21:55.371408'),
+(17, 'Espresso Martini', 'Espresso Martini – die perfekte Kombination aus Koffein und Erfrischung', 'Füllen Sie ein Martiniglas vorab mit Eiswürfeln, damit das Getränk später kühl bleibt. \r\nFüllen Sie circa drei Eiswürfel in einen Cocktailshaker.\r\nGeben Sie nun Wodka, Kaffeelikör, Espresso und den Zuckersirup dazu. Alles zusammen circa 15-20 Sekunden kräftig schütteln, sodass der charakteristische, feinporige Schaum entsteht. \r\nNehmen Sie die Eiswürfel im Anschluss wieder aus dem Martiniglas.\r\nGießen Sie den Cocktail nun durch ein Sieb in ein formschönes Martiniglas.\r\nGarnieren Sie den Espresso Martini zuletzt mit drei Espressobohnen – so wird er zum besonderen Blickfang – Fertig! \r\n', 2, '2026-01-18 14:05:25.905218'),
+(18, 'Sunset Breeze', 'Ein fruchtig-erfrischender Cocktail mit tropischem Flair, perfekt für laue Sommerabende und entspannte Partys.', 'Glas mit Eiswürfeln füllen, Rum mit Ananas-, Maracuja- und Orangensaft in einen Shaker geben, Limettensaft hinzufügen, kräftig shaken, Mischung ins Glas abseihen, Grenadine langsam eingießen damit ein Farbverlauf entsteht, mit Crushed Ice auffüllen, mit Orange und Minze garnieren', 5, '2026-01-18 19:39:03.791970');
 
 -- --------------------------------------------------------
 
@@ -230,44 +213,34 @@ CREATE TABLE `recipe_categories` (
 --
 
 INSERT INTO `recipe_categories` (`recipe_id`, `category_id`) VALUES
-(10, 1),
-(10, 2),
-(10, 5),
-(11, 1),
-(11, 3),
-(11, 5),
-(11, 6),
-(20, 2),
-(20, 3),
-(20, 4),
-(20, 5),
-(20, 7),
-(21, 1),
-(21, 5),
-(21, 7),
-(22, 1),
-(22, 6),
-(23, 1),
-(23, 2),
-(23, 5),
-(24, 1),
-(24, 3),
-(25, 1),
-(25, 7),
-(26, 1),
-(26, 2),
-(26, 5),
-(27, 1),
-(27, 6),
-(28, 1),
-(28, 2),
-(28, 5),
-(29, 1),
-(29, 5),
-(29, 7),
-(30, 3),
-(30, 5),
-(30, 7);
+(1, 1),
+(1, 2),
+(1, 5),
+(2, 1),
+(2, 3),
+(2, 5),
+(3, 1),
+(3, 6),
+(4, 1),
+(4, 2),
+(4, 5),
+(5, 1),
+(5, 2),
+(5, 5),
+(6, 1),
+(6, 3),
+(6, 5),
+(7, 1),
+(7, 2),
+(7, 7),
+(8, 3),
+(8, 5),
+(8, 7),
+(17, 1),
+(18, 2),
+(18, 3),
+(18, 5),
+(18, 7);
 
 -- --------------------------------------------------------
 
@@ -286,20 +259,18 @@ CREATE TABLE `recipe_images` (
 --
 
 INSERT INTO `recipe_images` (`image_id`, `recipe_id`, `image_path`) VALUES
-(1, 10, 'resources/images/user_uploads/mojito_20260105_021118.jpg'),
-(10, 20, 'resources/images/user_uploads/Sommerlicher_Erdbeer_Minz_Smoothie_Bild_1_User_2_1767633468.jpg'),
-(11, 10, 'resources/uploads/recipes/1767660536_2_banner.webp'),
-(12, 11, 'resources/uploads/recipes/1767661889_3_pinacolada.jpeg'),
-(23, 30, 'resources/uploads/recipes/recipe_30_1767663045.jpg'),
-(24, 29, 'resources/uploads/recipes/recipe_29_1767663059.webp'),
-(25, 28, 'resources/uploads/recipes/recipe_28_1767663066.jpg'),
-(26, 27, 'resources/uploads/recipes/recipe_27_1767663075.jpg'),
-(27, 26, 'resources/uploads/recipes/recipe_26_1767663083.webp'),
-(28, 25, 'resources/uploads/recipes/recipe_25_1767663093.jpg'),
-(29, 24, 'resources/uploads/recipes/recipe_24_1767663104.jpg'),
-(30, 23, 'resources/uploads/recipes/recipe_23_1767663117.jpg'),
-(31, 21, 'resources/uploads/recipes/recipe_21_1767663127.webp'),
-(32, 22, 'resources/uploads/recipes/recipe_22_1767663143.jpg');
+(2, 2, 'resources/uploads/recipes/1767661889_3_pinacolada.jpeg'),
+(3, 3, 'resources/uploads/recipes/recipe_22_1767663143.jpg'),
+(4, 4, 'resources/uploads/recipes/recipe_23_1767663117.jpg'),
+(5, 5, 'resources/uploads/recipes/recipe_28_1767663066.jpg'),
+(8, 6, 'resources/uploads/recipes/recipe_6_1768600662.jpg'),
+(9, 7, 'resources/uploads/recipes/recipe_7_1768603130.jpg'),
+(10, 6, 'resources/uploads/recipes/recipe_6_1768603419_0.jpg'),
+(11, 6, 'resources/uploads/recipes/recipe_6_1768603419_1.jpg'),
+(12, 8, 'resources/uploads/recipes/recipe_8_1768742515_0.webp'),
+(14, 1, 'resources/uploads/recipes/recipe_1_1768743960_0.webp'),
+(15, 1, 'resources/uploads/recipes/recipe_1_1768743990_0.jpg'),
+(16, 18, 'resources/uploads/recipes/recipe_18_1768765143_0.webp');
 
 -- --------------------------------------------------------
 
@@ -309,67 +280,65 @@ INSERT INTO `recipe_images` (`image_id`, `recipe_id`, `image_path`) VALUES
 
 CREATE TABLE `recipe_ingredients` (
   `recipe_id` int(10) UNSIGNED NOT NULL,
-  `ingredient_id` int(10) UNSIGNED NOT NULL
+  `ingredient_id` int(10) UNSIGNED NOT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `unit` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Daten für Tabelle `recipe_ingredients`
 --
 
-INSERT INTO `recipe_ingredients` (`recipe_id`, `ingredient_id`) VALUES
-(10, 11),
-(10, 12),
-(10, 13),
-(10, 14),
-(10, 15),
-(11, 11),
-(11, 17),
-(11, 18),
-(11, 19),
-(11, 20),
-(11, 21),
-(20, 19),
-(20, 29),
-(20, 30),
-(20, 31),
-(20, 32),
-(20, 33),
-(20, 35),
-(21, 43),
-(21, 44),
-(21, 45),
-(21, 46),
-(22, 47),
-(22, 48),
-(22, 49),
-(23, 22),
-(23, 51),
-(23, 52),
-(24, 53),
-(24, 54),
-(24, 55),
-(25, 22),
-(25, 57),
-(25, 58),
-(26, 12),
-(26, 55),
-(26, 59),
-(27, 53),
-(27, 63),
-(27, 64),
-(27, 65),
-(28, 66),
-(28, 67),
-(28, 68),
-(29, 69),
-(29, 70),
-(29, 71),
-(29, 72),
-(29, 73),
-(29, 74),
-(30, 75),
-(30, 76),
-(30, 77);
+INSERT INTO `recipe_ingredients` (`recipe_id`, `ingredient_id`, `amount`, `unit`) VALUES
+(1, 1, 50.00, 'ml'),
+(1, 2, 30.00, 'ml'),
+(1, 3, 2.00, 'cl'),
+(1, 4, 8.00, 'Stück'),
+(1, 5, 100.00, 'ml'),
+(2, 1, 50.00, 'ml'),
+(2, 6, 50.00, 'ml'),
+(2, 7, 100.00, 'ml'),
+(2, 8, 1.00, 'Stück'),
+(3, 9, 30.00, 'ml'),
+(3, 10, 30.00, 'ml'),
+(3, 11, 30.00, 'ml'),
+(4, 2, 20.00, 'ml'),
+(4, 12, 50.00, 'ml'),
+(4, 13, 150.00, 'ml'),
+(5, 5, 30.00, 'ml'),
+(5, 14, 60.00, 'ml'),
+(5, 15, 90.00, 'ml'),
+(6, 9, 50.00, 'ml'),
+(6, 17, 30.00, 'ml'),
+(6, 18, 15.00, 'ml'),
+(6, 19, 15.00, 'ml'),
+(6, 20, 1.00, 'Stück'),
+(6, 21, 2.00, 'Stück'),
+(7, 8, 1.00, 'Stück'),
+(7, 17, 30.00, 'ml'),
+(7, 18, 2.00, 'cl'),
+(7, 40, 6.00, 'cl'),
+(7, 43, 1.00, 'Spritzer'),
+(7, 44, 0.50, 'Stück'),
+(8, 58, 4.00, 'cl'),
+(8, 59, 3.00, 'cl'),
+(8, 60, 100.00, 'ml'),
+(8, 61, 4.00, 'cl'),
+(8, 62, 0.00, 'Stück'),
+(17, 18, 0.50, 'cl'),
+(17, 62, 2.00, 'Stück'),
+(17, 83, 4.00, 'cl'),
+(17, 101, 3.00, 'cl'),
+(17, 103, 3.00, 'Stück'),
+(18, 1, 4.00, 'cl'),
+(18, 2, 2.00, 'cl'),
+(18, 4, 2.00, 'Stück'),
+(18, 7, 6.00, 'cl'),
+(18, 60, 4.00, 'cl'),
+(18, 62, 5.00, 'Stück'),
+(18, 108, 4.00, 'cl'),
+(18, 110, 1.00, 'cl'),
+(18, 112, 1.00, 'Stück');
 
 -- --------------------------------------------------------
 
@@ -389,58 +358,44 @@ CREATE TABLE `recipe_steps` (
 --
 
 INSERT INTO `recipe_steps` (`step_id`, `recipe_id`, `step_number`, `instruction`) VALUES
-(4, 10, 1, 'Limetten auspressen'),
-(5, 10, 2, 'Minze leicht zerdrücken'),
-(6, 10, 3, 'Zucker & Rum hinzufügen'),
-(7, 10, 4, 'Mit Soda auffüllen'),
-(8, 10, 5, 'Eiswürfel hinzufügen'),
-(9, 10, 6, 'Umrühren'),
-(10, 11, 1, 'Eiswürfel in den Mixer geben'),
-(11, 11, 2, 'Rum'),
-(12, 11, 3, 'Kokoscreme und Ananassaft hinzufügen'),
-(13, 11, 4, 'Alles mixen bis cremig'),
-(14, 11, 5, 'In ein Glas füllen'),
-(15, 11, 6, 'Mit Ananasstück und Cocktailkirsche garnieren'),
-(16, 11, 7, 'Sofort servieren'),
-(26, 20, 1, 'Erdbeeren waschen und halbieren'),
-(27, 20, 2, 'Banane schälen und in Stücke schneiden'),
-(28, 20, 3, 'Minzblätter grob hacken'),
-(29, 20, 4, 'alle Zutaten in einen Mixer geben'),
-(30, 20, 5, 'gut pürieren bis eine cremige Konsistenz entsteht'),
-(31, 20, 6, 'bei Bedarf mit Honig nachsüßen'),
-(32, 20, 7, 'in Gläser füllen'),
-(33, 20, 8, 'mit Minzblatt garnieren'),
-(34, 20, 9, 'sofort servieren'),
-(68, 30, 1, 'Tequila und O-Saft mischen'),
-(69, 30, 2, 'Eis ins Glas'),
-(70, 30, 3, 'Grenadine vorsichtig einsinken lassen'),
-(71, 29, 1, 'Alle 5 klaren Geister mischen'),
-(72, 29, 2, 'Zitronensaft dazu'),
-(73, 29, 3, 'Mit Cola auffüllen'),
-(74, 28, 1, 'Glas mit Eis füllen'),
-(75, 28, 2, 'Prosecco und Aperol eingießen'),
-(76, 28, 3, 'Spritzer Soda dazu'),
-(77, 27, 1, 'Zucker mit Bitter auflösen'),
-(78, 27, 2, 'Whiskey und Eis zugeben'),
-(79, 27, 3, 'Lange rühren'),
-(80, 26, 1, 'Rum, Limette, Sirup in den Shaker'),
-(81, 26, 2, 'Eiskalt shaken'),
-(82, 26, 3, 'Ohne Eis servieren'),
-(89, 25, 1, 'Espresso kochen und kühlen'),
-(90, 25, 2, 'Mit Wodka und Likör hart shaken'),
-(91, 25, 3, 'In Martini-Schale füllen'),
-(95, 24, 1, 'Whiskey, Zitrone und Zucker shaken'),
-(96, 24, 2, 'Eiswürfel dazu'),
-(97, 24, 3, 'In den Tumbler abseihen'),
-(98, 23, 1, 'Wodka und Limette ins Glas'),
-(99, 23, 2, 'Eis hinzufügen'),
-(100, 23, 3, 'Mit Ginger Beer auffüllen'),
-(104, 21, 1, 'Rum, Limette und Mandelsirup shaken'),
-(105, 21, 2, 'Auf Crushed Ice abseihen'),
-(106, 21, 3, 'Mit Minze garnieren'),
-(110, 22, 1, 'Gin, Vermouth und Campari mischen'),
-(111, 22, 2, 'Auf Eis rühren'),
-(112, 22, 3, 'Orangenzeste hinzufügen');
+(1, 1, 1, 'Limetten auspressen'),
+(2, 1, 2, 'Minze leicht zerdrücken'),
+(3, 1, 3, 'Zucker & Rum hinzufügen'),
+(4, 1, 4, 'Mit Soda auffüllen'),
+(5, 1, 5, 'Eiswürfel hinzufügen'),
+(6, 1, 6, 'Umrühren'),
+(7, 2, 1, 'Eis mixen'),
+(8, 2, 2, 'Rum, Kokoscreme und Saft dazu'),
+(9, 2, 3, 'Cremig mixen'),
+(10, 2, 4, 'Garnieren'),
+(11, 3, 1, 'Gin, Vermouth und Campari mischen'),
+(12, 3, 2, 'Auf Eis rühren'),
+(13, 3, 3, 'Orangenzeste hinzufügen'),
+(14, 4, 1, 'Wodka und Limette ins Glas'),
+(15, 4, 2, 'Eis hinzufügen'),
+(16, 4, 3, 'Mit Ginger Beer auffüllen'),
+(17, 5, 1, 'Eis ins Glas'),
+(18, 5, 2, 'Prosecco und Aperol zugeben'),
+(19, 5, 3, 'Spritzer Soda'),
+(40, 7, 1, 'Alle flüssigen Zutaten in einen Shaker geben.'),
+(41, 7, 3, 'Zuerst ohne Eis kräftig schütteln (Dry Shake), um das Eiweiß aufzuschäumen.'),
+(42, 7, 5, 'Eiswürfel hinzufügen und erneut ca. 15 Sekunden eiskalt schütteln.'),
+(43, 7, 7, 'Durch ein Sieb in einen mit frischem Eis gefüllten Tumbler abseihen.'),
+(44, 7, 9, 'Mit einer Cocktailkirsche garnieren.'),
+(50, 6, 1, 'Gin, Zitronensaft und Zuckersirup in einen Shaker geben.'),
+(51, 6, 2, 'Mit Eiswürfeln füllen und ca. 10-15 Sekunden kräftig schütteln.'),
+(52, 6, 3, 'Ein Glas (Tumbler) mit Crushed Ice füllen und den Mix durch ein Sieb eingießen.'),
+(53, 6, 4, 'Den Brombeerlikör vorsichtig über das Eis träufeln, sodass ein schöner Farbeffekt entsteht.'),
+(54, 6, 5, 'Mit Zitronenscheibe und Brombeeren garnieren.'),
+(55, 8, 1, 'Eiswürfel in das Glas füllen.'),
+(56, 8, 2, 'Erst Malibu, danach Wodka in das Glas geben und mit Maracujasaft auffüllen.'),
+(57, 8, 3, 'Einen Schuss Kirsch- oder Cranberrysaft dazugeben. Dadurch entsteht ein leichter Rotschleier.'),
+(58, 17, 1, 'Füllen Sie ein Martiniglas vorab mit Eiswürfeln, damit das Getränk später kühl bleibt.'),
+(59, 17, 2, 'Füllen Sie circa drei Eiswürfel in einen Cocktailshaker.'),
+(60, 17, 3, 'Geben Sie nun Wodka, Kaffeelikör, Espresso und den Zuckersirup dazu. Alles zusammen circa 15-20 Sekunden kräftig schütteln, sodass der charakteristische, feinporige Schaum entsteht.'),
+(61, 17, 4, 'Nehmen Sie die Eiswürfel im Anschluss wieder aus dem Martiniglas.'),
+(62, 17, 5, 'Gießen Sie den Cocktail nun durch ein Sieb in ein formschönes Martiniglas.'),
+(63, 17, 6, 'Garnieren Sie den Espresso Martini zuletzt mit drei Espressobohnen – so wird er zum besonderen Blickfang – Fertig!');
 
 -- --------------------------------------------------------
 
@@ -483,9 +438,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userid`, `benutzername`, `email`, `profile_image`, `passwort`, `role`, `is_barkeeper`) VALUES
-(1, 'test name', 'email@mail.at', 'resources/images/default_profile.png', 'dwefewfkeulidjewhfghkdjskamsndbhjas', 1, 0),
-(2, 'John Pork', 'ba.ba.boi@outlook.com', 'resources/images/profiles/user_2_1767642567.webp', '$2y$10$p930OZRppw21aAwLwBKmue310YKYCq/fiYlnp5PZsKEypphKyhmyC', 1, 1),
-(3, 'discordmod', 'uwu@mod.at', 'resources/images/default_profile.png', '$2y$10$fpch2pb.N0unA4p9B8bDnen6yuUyMsOnM3IRWBTlxj9uC2ZDaI8Qm', 3, 0);
+(2, 'John Pork', 'ba.ba.boi@outlook.com', 'resources/uploads/profiles/profile_user2_661589.webp', '$2y$10$p930OZRppw21aAwLwBKmue310YKYCq/fiYlnp5PZsKEypphKyhmyC', 1, 1),
+(3, 'discordmod', 'uwu@mod.at', 'resources/images/default_profile.png', '$2y$10$fpch2pb.N0unA4p9B8bDnen6yuUyMsOnM3IRWBTlxj9uC2ZDaI8Qm', 3, 0),
+(4, 'ichtestegernemodfunkrion', 'mod.moderatur@gmail.com', 'resources/uploads/pfp/user_4_1767774520.jpeg', '$2y$10$u6c435Wpc0Z8FIWZxKbMheBLdWQcz2FgdQp1yU3V5O2.ZxFQZWWDu', 2, 0),
+(5, 'admin', 'cocktailadmin@gmail.com', 'resources/uploads/profiles/user_5_1768746940.png', '$2y$10$HD8/P19bmyjnViOAUULsXeeiZxdgaKSPbPJo5hGsgc5eoHnRINHgW', 3, 0),
+(6, 'user2', 'user2@mail.com', 'resources/images/placeholders/default_profile.png', '$2y$10$0JtC26FiytJ1k3lEiSbsBO9E.ox8a9Wu1dn0aipvrs6E0KK87EQfu', 1, 0);
 
 --
 -- Indizes der exportierten Tabellen
@@ -587,7 +544,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `barkeeper_applications`
 --
 ALTER TABLE `barkeeper_applications`
-  MODIFY `app_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `app_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `categories`
@@ -599,31 +556,31 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT für Tabelle `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `ingredient_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT für Tabelle `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `recipe_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT für Tabelle `recipe_images`
 --
 ALTER TABLE `recipe_images`
-  MODIFY `image_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `image_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT für Tabelle `recipe_steps`
 --
 ALTER TABLE `recipe_steps`
-  MODIFY `step_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `step_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `userid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `userid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints der exportierten Tabellen
