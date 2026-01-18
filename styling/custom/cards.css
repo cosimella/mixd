@@ -1,4 +1,4 @@
-/* --- 1. REZEPT-KARTEN (Startseite, Suche, Profil) --- */
+
 .recipe-card, .rezeptkarte {
     background-color: #ffffff;
     border-radius: 20px;
@@ -21,7 +21,6 @@
     object-fit: cover; 
 }
 
-/* Verhindert das Standard-Bootstrap-Blau bei Links */
 .recipe-card a, 
 .rezeptkarte a {
     color: inherit !important;
@@ -31,12 +30,10 @@
 .recipe-card-title {
     font-size: 0.95rem;
     line-height: 1.2;
-    /* Nutzt deine Beere-Variable aus der base.css */
     color: var(--secondary-accent) !important; 
     font-weight: 700;
 }
 
-/* --- 2. QUICKLINK-KARTEN (Kategorien auf der Startseite) --- */
 .card-quicklink {
     transition: all 0.3s ease;
     border-radius: 20px;
@@ -50,7 +47,6 @@
     justify-content: center;
 }
 
-/* Hover-Zustand: Invertierung auf Koralle */
 .card-quicklink:hover {
     background-color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
@@ -58,13 +54,11 @@
     box-shadow: 0 8px 20px rgba(255, 111, 97, 0.2) !important;
 }
 
-/* Alle Icons und Texte werden beim Hover weiß */
 .card-quicklink:hover *,
 .card-quicklink:hover span { 
     color: #ffffff !important; 
 }
 
-/* --- 3. ADMIN-CONTROLS AUF KARTEN --- */
 .btn-edit-small {
     font-size: 0.75rem;
     padding: 0.25rem 0.75rem;

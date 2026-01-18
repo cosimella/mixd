@@ -19,7 +19,6 @@
 #main-app-footer { background-color: #ffffff; border-top: 1px solid #dee2e6; }
 .footer-copyright { font-size: 0.7rem; opacity: 0.75; }
 
-/* --- FOOTER STYLING --- */
 #main-app-footer {
     background-color: #ffffff;
     border-top: 1px solid #dee2e6;
@@ -51,7 +50,6 @@
     color: var(--primary-accent) !important;
 }
 
-/* Der Favoriten-Knopf in der Detailansicht */
 .fav-circle {
     width: 55px !important;
     height: 55px !important;
@@ -64,14 +62,12 @@
     border-width: 2px !important;
 }
 
-/* Zustand: Nicht favorisiert (Weißer Hintergrund, roter Rand) */
 .btn-outline-danger.fav-circle {
     background-color: #ffffff !important;
     color: #dc3545 !important;
     border-color: #f0f0f0 !important; 
 }
 
-/* Zustand: Favorisiert (Roter Hintergrund) */
 .btn-danger.fav-circle {
     background-color: #dc3545 !important;
     color: #ffffff !important;
