@@ -2,14 +2,11 @@
 session_start();
 include "util/dbutil.php"; 
 
-// Fehleranzeige für die Entwicklung (hilft beim Debuggen)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// WICHTIG: Kein auth_check hier, sonst Endlosschleife!
-
 $errorMessage = "";
-// Cookie auslesen, um das E-Mail Feld vorauszufüllen
+
 $rememberedEmail = isset($_COOKIE['remember_user']) ? $_COOKIE['remember_user'] : "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -17,24 +14,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $passwordInput = $_POST['password'];
     $rememberMe    = isset($_POST['remember_me']);
 
-    // 1. SQL-ABFRAGE (Korrigiert: 'role' statt 'user_role')
     $queryFindUser = "SELECT userid, benutzername, passwort, profile_image, role FROM users WHERE email = ?";
     $statementLookup = $conn->prepare($queryFindUser);
     $statementLookup->bind_param("s", $emailInput);
     $statementLookup->execute();
     $userData = $statementLookup->get_result()->fetch_assoc();
 
-    // 2. VERIFIZIERUNG
     if ($userData && password_verify($passwordInput, $userData['passwort'])) {
         
-        // 3. COOKIE-LOGIK (Anforderung: User Preferences)
         if ($rememberMe) {
             setcookie("remember_user", $emailInput, time() + (30 * 24 * 60 * 60), "/");
         } else {
             setcookie("remember_user", "", time() - 3600, "/");
         }
 
-        // 4. SESSION-DATEN (Konsistent mit dem Rest der App)
         $_SESSION['userid']    = $userData['userid']; 
         $_SESSION['user']      = $userData['benutzername'];
         $_SESSION['user_role'] = $userData['role']; 
