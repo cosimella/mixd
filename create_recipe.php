@@ -12,21 +12,18 @@ $currentUserId = $_SESSION['userid'];
 $isUploadSuccessful = false;
 $errorMessage = "";
 
-// 1. Kategorien für das Formular laden
 $queryCategories = $conn->query("SELECT * FROM categories ORDER BY category_name ASC");
 $categoryOptions = [];
 while($categoryRow = $queryCategories->fetch_assoc()) {
     $categoryOptions[] = $categoryRow;
 }
 
-// 2. SPEICHER-LOGIK
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $recipeTitle       = $_POST['recipe_name'];
     $recipeDescription = $_POST['description'];
     $rawInstructions   = $_POST['steps'];
     $selectedCategories = $_POST['categories'] ?? [];
 
-    // A. HAUPTREZEPT SPEICHERN
     $insertRecipeQuery = "INSERT INTO recipes (recipe_name, beschreibung, anleitung, created_by) VALUES (?, ?, ?, ?)";
     $statementRecipe = $conn->prepare($insertRecipeQuery);
     $statementRecipe->bind_param("sssi", $recipeTitle, $recipeDescription, $rawInstructions, $currentUserId);
@@ -34,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($statementRecipe->execute()) {
         $newRecipeId = $conn->insert_id;
 
-        // B. ZUTATEN SPEICHERN
         $submittedIngredientNames   = $_POST['ing_name'] ?? [];
         $submittedIngredientAmounts = $_POST['ing_amount'] ?? [];
         $submittedIngredientUnits   = $_POST['ing_unit'] ?? [];
@@ -61,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        // C. ZUBEREITUNGSSCHRITTE
         $instructionSteps = explode("\n", $rawInstructions);
         $stmtStep = $conn->prepare("INSERT INTO recipe_steps (recipe_id, step_number, instruction) VALUES (?, ?, ?)");
         foreach ($instructionSteps as $index => $stepText) {
@@ -73,25 +68,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        // D. KATEGORIEN
         $stmtCat = $conn->prepare("INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)");
         foreach ($selectedCategories as $categoryId) {
             $stmtCat->bind_param("ii", $newRecipeId, $categoryId);
             $stmtCat->execute();
         }
 
-        // E. BILDER-UPLOAD (Hier lag der Fehler)
-        // Wir prüfen: Gibt es das Feld 'image' UND ist der Name des ersten Bildes nicht leer?
         if (isset($_FILES['image']) && !empty($_FILES['image']['name'][0])) {
             $uploadPath = 'resources/uploads/recipes/';
             
-            // Falls der Ordner fehlt, erstellen (einfach & anfängerfreundlich)
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
             }
 
             foreach ($_FILES['image']['tmp_name'] as $index => $temporaryLocation) {
-                // Nur verarbeiten, wenn kein Fehler beim Upload vorliegt (Code 0 = OK)
+            
                 if ($_FILES['image']['error'][$index] === 0) {
                     $fileExtension = pathinfo($_FILES['image']['name'][$index], PATHINFO_EXTENSION);
                     $uniqueFileName = "recipe_" . $newRecipeId . "_" . time() . "_" . $index . "." . $fileExtension;
@@ -206,7 +197,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             container.appendChild(newRow);
         }
 
-        // LocalStorage Logik
         function saveToLocal() {
             const ingredients = [];
             document.querySelectorAll('.ingredient-row').forEach(row => {
