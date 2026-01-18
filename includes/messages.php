@@ -3,7 +3,7 @@ $msgError = $errorMessage ?? "";
 $msgSuccess = $successMessage ?? "";
 ?>
 
-<?php if ($msgError != ""): ?>
+<?php if ($msgError != ""): ?> 
     <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 d-flex align-items-center">
         <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
         <div>
@@ -22,3 +22,4 @@ $msgSuccess = $successMessage ?? "";
         </div>
     </div>
 <?php endif; ?>
+

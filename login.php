@@ -1,24 +1,24 @@
 <?php
 session_start();
-include "util/dbutil.php"; 
+require_once "util/dbutil.php"; 
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+$rememberedEmail = $_COOKIE['remember_user'] ?? "";
 $errorMessage = "";
-
-$rememberedEmail = isset($_COOKIE['remember_user']) ? $_COOKIE['remember_user'] : "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $emailInput    = trim($_POST['email']);
     $passwordInput = $_POST['password'];
     $rememberMe    = isset($_POST['remember_me']);
 
-    $queryFindUser = "SELECT userid, benutzername, passwort, profile_image, role FROM users WHERE email = ?";
-    $statementLookup = $conn->prepare($queryFindUser);
-    $statementLookup->bind_param("s", $emailInput);
-    $statementLookup->execute();
-    $userData = $statementLookup->get_result()->fetch_assoc();
+    
+    $query = "SELECT userid, benutzername, passwort, profile_image, role FROM users WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $emailInput);
+    $stmt->execute();
+    $userData = $stmt->get_result()->fetch_assoc();
 
     if ($userData && password_verify($passwordInput, $userData['passwort'])) {
         
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             setcookie("remember_user", "", time() - 3600, "/");
         }
-
+        
         $_SESSION['userid']    = $userData['userid']; 
         $_SESSION['user']      = $userData['benutzername'];
         $_SESSION['user_role'] = $userData['role']; 
@@ -47,11 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php include "includes/head-includes.php"; ?>
     <title>Anmelden | MIXD</title>
 </head>
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
     <?php include "includes/navbar.php"; ?>
 
-    <main class="container py-5">
-        <div class="row justify-content-center">
+    <main class="container py-5 flex-grow-1">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-5 col-lg-4">
                 
                 <div class="card shadow-sm border-0 rounded-4 p-4">
@@ -60,25 +60,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <p class="text-muted small">Schön, dass du wieder da bist!</p>
                     </div>
 
-                    <?php include "includes/messages.php"; ?>
+                    <?php if ($errorMessage): ?>
+                        <div class="alert alert-danger small rounded-3"><?= htmlspecialchars($errorMessage) ?></div>
+                    <?php endif; ?>
 
                     <form method="POST">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">E-MAIL</label>
-                            <input type="email" name="email" class="form-control" 
-                                   placeholder="Deine E-Mail" 
-                                   value="<?php echo htmlspecialchars($rememberedEmail); ?>" required>
+                            <label class="form-label small fw-bold text-muted text-uppercase">E-Mail</label>
+                            <input type="email" name="email" class="form-control border-0 bg-light" 
+                                   value="<?= htmlspecialchars($rememberedEmail) ?>" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">PASSWORT</label>
-                            <input type="password" name="password" class="form-control" 
-                                   placeholder="Dein Passwort" required>
+                            <label class="form-label small fw-bold text-muted text-uppercase">Passwort</label>
+                            <input type="password" name="password" class="form-control border-0 bg-light" required>
                         </div>
 
                         <div class="mb-4 form-check">
                             <input type="checkbox" name="remember_me" class="form-check-input" id="remember" 
-                                   <?php echo !empty($rememberedEmail) ? 'checked' : ''; ?>>
+                                   <?= !empty($rememberedEmail) ? 'checked' : '' ?>>
                             <label class="form-check-label small text-muted" for="remember">E-Mail merken</label>
                         </div>
                         

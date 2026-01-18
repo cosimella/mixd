@@ -1,44 +1,38 @@
 <?php
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
 session_start();
 
-
-include "dbutil.php";
+require_once "dbutil.php";
 include "auth_check.php";
 
-$currentUserId = $_SESSION['userid'];
+$idUser   = $_SESSION['userid'];
+$idRecipe = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-
-if (!isset($_GET['id'])) {
+if ($idRecipe <= 0) {
     header("Location: ../index.php");
     exit;
 }
 
-$targetRecipeId = (int)$_GET['id'];
+$sqlCheck = "SELECT * FROM favorites WHERE user_id = ? AND recipe_id = ?";
+$stmt = $conn->prepare($sqlCheck);
+$stmt->bind_param("ii", $idUser, $idRecipe);
+$stmt->execute();
+$res = $stmt->get_result();
 
-$queryCheckFavorite = "SELECT * FROM favorites WHERE user_id = ? AND recipe_id = ?";
-$statementCheck = $conn->prepare($queryCheckFavorite);
-$statementCheck->bind_param("ii", $currentUserId, $targetRecipeId);
-$statementCheck->execute();
-$favoriteLookupResult = $statementCheck->get_result();
 
-if ($favoriteLookupResult->num_rows > 0) {
-   
-    $sqlToggleAction = "DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?";
+if ($res->num_rows > 0) {
+    $sqlAction = "DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?";
 } else {
-    
-    $sqlToggleAction = "INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)";
+    $sqlAction = "INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)";
 }
-$statementCheck->close();
+$stmt->close();
 
-$statementToggle = $conn->prepare($sqlToggleAction);
-$statementToggle->bind_param("ii", $currentUserId, $targetRecipeId);
-$statementToggle->execute();
-$statementToggle->close();
+$stmtToggle = $conn->prepare($sqlAction);
+$stmtToggle->bind_param("ii", $idUser, $idRecipe);
+$stmtToggle->execute();
+$stmtToggle->close();
 
-header("Location: ../recipe.php?id=" . $targetRecipeId);
+header("Location: ../recipe.php?id=" . $idRecipe);
 exit;
 ?>

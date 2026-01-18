@@ -1,45 +1,36 @@
-
-.form-control, .form-select {
+.form-control, .form-select, .form-control-custom {
     font-family: 'Quicksand', sans-serif;
-    font-weight: 500;
-    border-radius: 12px; 
-    padding: 10px 18px;
-    border: 2px solid #f0f0f0; 
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #f0f0f0 !important;
+    background-color: #f8f9fa !important;
     transition: all 0.2s ease-in-out;
-    color: var(--secondary-accent);
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: var(--primary-accent) !important;
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     box-shadow: 0 0 0 4px rgba(255, 111, 97, 0.15) !important;
     outline: none;
 }
 
-.input-group.rounded-pill .form-control {
-    border-radius: 50px 0 0 50px;
-}
-.input-group.rounded-pill .btn {
-    border-radius: 0 50px 50px 0;
+.search-group-custom {
+    border-radius: 50rem;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
 }
 
 .upload-box { 
     border: 2px dashed #d1d1d1 !important; 
-    border-radius: 20px; 
-    background-color: #fafafa;
+    border-radius: 20px;
     padding: 30px;
     text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 
-.upload-box:hover { 
-    border-color: var(--primary-accent) !important; 
-    background-color: #fffaf9; 
-    transform: translateY(-2px);
-}
-
-.form-select {
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ff6f61' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+.edit-img-thumbnail {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
 }

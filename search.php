@@ -1,46 +1,41 @@
 <?php
 session_start();
-include "util/dbutil.php";
+require_once "util/dbutil.php";
 
-$searchQuery = "";
-
-if (isset($_GET['query'])) {
-    $searchQuery = trim($_GET['query']);
-}
-
+$searchQuery = $_GET['query'] ?? "";
 $searchResults = [];
 
 if ($searchQuery !== "") {
-   
+
     $searchPattern = "%" . $searchQuery . "%";
     
-    $sqlSearchRecipes = "SELECT 
-        r.recipe_id, 
-        r.recipe_name, 
-        ri.image_path,
-        u.is_barkeeper,
-        AVG(rat.stars) as avg_rating
-    FROM recipes r
-    LEFT JOIN recipe_images ri ON r.recipe_id = ri.recipe_id
-    LEFT JOIN recipe_ingredients rin ON r.recipe_id = rin.recipe_id
-    LEFT JOIN ingredients i ON rin.ingredient_id = i.ingredient_id
-    LEFT JOIN users u ON r.created_by = u.userid
-    LEFT JOIN ratings rat ON r.recipe_id = rat.recipe_id
-    WHERE r.recipe_name LIKE ?
-    OR i.ingredient_name LIKE ?
-    GROUP BY r.recipe_id
-    ORDER BY r.recipe_name ASC";
+    
+    $sql = "SELECT 
+                r.recipe_id, 
+                r.recipe_name, 
+                ri.image_path,
+                u.is_barkeeper,
+                AVG(rat.stars) as avg_rating
+            FROM recipes r
+            LEFT JOIN recipe_images ri ON r.recipe_id = ri.recipe_id
+            LEFT JOIN recipe_ingredients rin ON r.recipe_id = rin.recipe_id
+            LEFT JOIN ingredients i ON rin.ingredient_id = i.ingredient_id
+            LEFT JOIN users u ON r.created_by = u.userid
+            LEFT JOIN ratings rat ON r.recipe_id = rat.recipe_id
+            WHERE r.recipe_name LIKE ?
+            OR i.ingredient_name LIKE ?
+            GROUP BY r.recipe_id
+            ORDER BY r.recipe_name ASC";
 
-    $statementSearch = $conn->prepare($sqlSearchRecipes);
-    $statementSearch->bind_param("ss", $searchPattern, $searchPattern);
-    $statementSearch->execute();
-    $queryResponse = $statementSearch->get_result();
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $searchPattern, $searchPattern);
+    $stmt->execute();
+    $res = $stmt->get_result();
 
-    while ($recipeRow = $queryResponse->fetch_assoc()) {
-        $searchResults[] = $recipeRow;
+    while ($row = $res->fetch_assoc()) {
+        $searchResults[] = $row;
     }
-
-    $statementSearch->close();
+    $stmt->close();
 }
 ?>
 
@@ -48,17 +43,17 @@ if ($searchQuery !== "") {
 <html lang="de">
 <head>
     <?php include "includes/head-includes.php"; ?>
-    <title>Suche: <?php echo htmlspecialchars($searchQuery); ?></title>
+    <title>Suche: <?= htmlspecialchars($searchQuery) ?></title>
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
     <?php include "includes/navbar.php"; ?>
 
-    <main class="container py-5">
+    <main class="container py-5 flex-grow-1">
         <div class="mb-5">
             <?php if ($searchQuery !== ""): ?>
-                <h2 class="fw-bold">Ergebnisse für "<?php echo htmlspecialchars($searchQuery); ?>"</h2>
-                <p class="text-muted"><?php echo count($searchResults); ?> Cocktails gefunden</p>
+                <h2 class="fw-bold">Ergebnisse für "<?= htmlspecialchars($searchQuery) ?>"</h2>
+                <p class="text-muted"><?= count($searchResults) ?> Drinks gefunden</p>
             <?php else: ?>
                 <h2 class="fw-bold">Suche</h2>
                 <p class="text-muted">Gib einen Namen oder eine Zutat ein.</p>
@@ -67,7 +62,8 @@ if ($searchQuery !== "") {
 
         <div class="row g-4">
             <?php if (count($searchResults) > 0): ?>
-                <?php foreach ($searchResults as $rezept): ?> <?php
+                <?php foreach ($searchResults as $rezept): ?> 
+                    <?php
                     $showIngredients = false;
                     $showControls = false; 
                     include "includes/recipe-card.php";
@@ -76,7 +72,7 @@ if ($searchQuery !== "") {
             <?php else: ?>
                 <div class="col-12 text-center py-5">
                     <div class="card shadow-sm border-0 p-5 rounded-4">
-                        <i class="bi bi-search text-muted mb-3" style="font-size: 3rem;"></i>
+                        <i class="bi bi-search text-muted mb-3"></i>
                         <h4 class="fw-bold">Leider nichts gefunden</h4>
                         <p class="text-muted">Probiere es mal mit "Gin" oder "Limetten".</p>
                         <div class="mt-3">
@@ -89,6 +85,5 @@ if ($searchQuery !== "") {
     </main>
 
     <?php include "includes/footer.php"; ?>
-    
 </body>
 </html>

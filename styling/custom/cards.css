@@ -1,84 +1,82 @@
-
-.rezeptkarte {
+/* --- 1. REZEPT-KARTEN (Startseite, Suche, Profil) --- */
+.recipe-card, .rezeptkarte {
     background-color: #ffffff;
-    border-radius: 20px; 
+    border-radius: 20px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
-    border: 1px solid rgba(0,0,0,0.03);
-    box-shadow: 0 4px 12px rgba(94, 67, 82, 0.05); 
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(0, 0, 0, 0.03) !important;
+    box-shadow: 0 4px 12px rgba(94, 67, 82, 0.05);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-.rezeptkarte:hover {
+.recipe-card:hover, .rezeptkarte:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 30px rgba(94, 67, 82, 0.12) !important;
 }
 
-.rezeptkarte img { 
-    width: 100%; 
+.recipe-card img { 
     height: 250px; 
-    object-fit: cover;
+    object-fit: cover; 
 }
 
+/* Verhindert das Standard-Bootstrap-Blau bei Links */
+.recipe-card a, 
+.rezeptkarte a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
 
+.recipe-card-title {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    /* Nutzt deine Beere-Variable aus der base.css */
+    color: var(--secondary-accent) !important; 
+    font-weight: 700;
+}
 
-.cat-card {
+/* --- 2. QUICKLINK-KARTEN (Kategorien auf der Startseite) --- */
+.card-quicklink {
     transition: all 0.3s ease;
     border-radius: 20px;
     background: white;
-    border: 1.5px solid #f0f0f0;
+    border: 1.5px solid #f0f0f0 !important;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-
-.cat-card i, 
-.cat-card .bi {
-    color: var(--primary-accent) !important;
-    font-size: 1.5rem; 
-    transition: 0.3s;
-}
-
-.cat-card span, 
-.cat-card .fw-bold {
-    color: var(--secondary-accent);
-    font-weight: 600; 
-}
-
-.cat-card:hover {
+/* Hover-Zustand: Invertierung auf Koralle */
+.card-quicklink:hover {
     background-color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
     transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 111, 97, 0.2) !important;
 }
 
-.cat-card:hover i, 
-.cat-card:hover .bi, 
-.cat-card:hover span, 
-.cat-card:hover .fw-bold {
-    color: #ffffff !important;
+/* Alle Icons und Texte werden beim Hover weiß */
+.card-quicklink:hover *,
+.card-quicklink:hover span { 
+    color: #ffffff !important; 
 }
 
-.empty-state-container {
-    padding: 3rem;
-    background-color: #ffffff;
-    border-radius: 20px; 
-    border: 1px solid #f0f0f0;
-    box-shadow: 0 10px 30px rgba(94, 67, 82, 0.05); 
-    text-align: center;
-}
-
-.empty-state-icon {
-    font-size: 4rem;
-    opacity: 0.3;
-    color: #6c757d; 
-    margin-bottom: 1.5rem;
-    display: block;
-}
-
-.empty-state-title {
+/* --- 3. ADMIN-CONTROLS AUF KARTEN --- */
+.btn-edit-small {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #333;
 }
 
-.empty-state-text {
-    color: #6c757d;
-    margin-bottom: 2rem;
+.btn-delete-circle {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+    flex-shrink: 0;
 }

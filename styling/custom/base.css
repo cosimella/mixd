@@ -1,95 +1,108 @@
 :root {
-    --primary-accent: #ff6f61;   
-    --secondary-accent: #5e4352;
+    --primary-accent: #ff6f61;   /* Koralle */
+    --secondary-accent: #5e4352; /* Beere */
     --muted-teal: #587b7f;
     --bg-light: #F7F7F7;
-    --text-dark: #333333;
+    --text-dark: #5e4352;
+}
+
+html {
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
 }
 
 body {
     font-family: 'Quicksand', sans-serif;
-    font-weight: 500; 
+    font-weight: 500;
     color: var(--secondary-accent);
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    line-height: 1.6; 
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700 !important;
     letter-spacing: -0.01em;
+    color: var(--secondary-accent) !important; 
 }
 
+.navbar-brand {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+    color: var(--primary-accent) !important; 
+}
 
-.text-primary, .text-accent { color: var(--primary-accent) !important; }
+.text-primary { color: var(--primary-accent) !important; }
 .bg-primary { background-color: var(--primary-accent) !important; }
 .border-primary { border-color: var(--primary-accent) !important; }
 
+/* --- BUTTONS: MIXD BRANDING --- */
 
+/* 1. Haupt-Buttons (Gefüllt) */
 .btn-primary {
     background-color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
-    color: white !important;
+    color: #ffffff !important;
     border-radius: 50px;
     font-weight: 600;
-    font-family: 'Quicksand', sans-serif;
-    transition: 0.3s;
-    padding: 8px 20px;
+    transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
+/* Hover & Focus Zustände für Primary */
+.btn-primary:hover, 
+.btn-primary:focus, 
+.btn-primary:active {
     background-color: var(--secondary-accent) !important;
     border-color: var(--secondary-accent) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 111, 97, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 111, 97, 0.3) !important;
 }
 
-
-a.text-primary, 
-.text-primary {
-    color: var(--primary-accent) !important;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-a.text-primary:hover {
-    color: var(--secondary-accent) !important;
-}
-
+/* 2. Outline-Buttons (z.B. Portions-Auswahl) */
 .btn-outline-primary {
     color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
     background-color: transparent !important;
-    font-weight: 600;
-    font-family: 'Quicksand', sans-serif;
     border-radius: 50px;
+    font-weight: 600;
 }
 
+/* Hover & Active Zustände für Outline */
 .btn-outline-primary:hover, 
 .btn-outline-primary:active, 
 .btn-outline-primary:focus,
 .show > .btn-outline-primary.dropdown-toggle {
     background-color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
-    color: white !important;
+    color: #ffffff !important;
     box-shadow: 0 0 0 0.25rem rgba(255, 111, 97, 0.25) !important;
 }
 
-
-.custom-container { padding: 0 80px; }
-@media (max-width: 576px) { .custom-container { padding: 0 12px; } }
-
-html {
-    scrollbar-gutter: stable;
-    overflow-y: scroll;
+/* --- GLOBALE LINKS (z.B. "Alles anzeigen", "Passwort vergessen") --- */
+a {
+    color: var(--primary-accent); 
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-weight: 600;
 }
-    
 
-body {
-    font-family: 'Lexend', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+a:hover {
+    color: var(--secondary-accent) !important;
+    text-decoration: underline; 
+}
+
+/* Speziell für Links, die wie "Secondary" wirken sollen */
+.link-muted {
+    color: var(--secondary-accent) !important;
+    opacity: 0.8;
+}
+
+.link-muted:hover {
+    opacity: 1;
+    color: var(--primary-accent) !important;
 }

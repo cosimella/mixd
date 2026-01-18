@@ -1,37 +1,39 @@
 <?php
 session_start();
 
-include "dbutil.php";
+require_once "dbutil.php";
 include "auth_check.php";
 
-$recipeId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$currentUserId = $_SESSION['userid'];
+$idRecipe = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$idUser   = $_SESSION['userid'];
 
-if ($recipeId > 0) {
+if ($idRecipe > 0) {
     
-    $checkStmt = $conn->prepare("SELECT recipe_id FROM recipes WHERE recipe_id = ? AND created_by = ?");
-    $checkStmt->bind_param("ii", $recipeId, $currentUserId);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
+    $sqlCheck = "SELECT recipe_id FROM recipes WHERE recipe_id = ? AND created_by = ?";
+    $stmt = $conn->prepare($sqlCheck);
+    $stmt->bind_param("ii", $idRecipe, $idUser);
+    $stmt->execute();
+    $res = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
+    if ($res->num_rows > 0) {
         
-        $conn->query("DELETE FROM recipe_ingredients WHERE recipe_id = $recipeId");
-        $conn->query("DELETE FROM recipe_steps WHERE recipe_id = $recipeId");
-        $conn->query("DELETE FROM recipe_categories WHERE recipe_id = $recipeId");
-        $conn->query("DELETE FROM favorites WHERE recipe_id = $recipeId");
-        $conn->query("DELETE FROM ratings WHERE recipe_id = $recipeId");
-        $conn->query("DELETE FROM recipe_images WHERE recipe_id = $recipeId");
+        $conn->query("DELETE FROM recipe_ingredients WHERE recipe_id = $idRecipe");
+        $conn->query("DELETE FROM recipe_steps WHERE recipe_id = $idRecipe");
+        $conn->query("DELETE FROM recipe_categories WHERE recipe_id = $idRecipe");
+        $conn->query("DELETE FROM favorites WHERE recipe_id = $idRecipe");
+        $conn->query("DELETE FROM ratings WHERE recipe_id = $idRecipe");
+        $conn->query("DELETE FROM recipe_images WHERE recipe_id = $idRecipe");
 
-        $deleteStmt = $conn->prepare("DELETE FROM recipes WHERE recipe_id = ? AND created_by = ?");
-        $deleteStmt->bind_param("ii", $recipeId, $currentUserId);
-        $deleteStmt->execute();
+        $sqlDel = "DELETE FROM recipes WHERE recipe_id = ? AND created_by = ?";
+        $stmtDel = $conn->prepare($sqlDel);
+        $stmtDel->bind_param("ii", $idRecipe, $idUser);
+        $stmtDel->execute();
 
         header("Location: ../my_recipes.php?msg=deleted");
         exit;
-    } else {
         
-        die("Du hast keine Berechtigung, dieses Rezept zu löschen.");
+    } else {
+        die("Unbefugter Zugriff oder Rezept nicht gefunden.");
     }
 }
 

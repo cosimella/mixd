@@ -1,10 +1,8 @@
 <?php
-
 $host     = "localhost";
 $user     = "root";
 $password = "";
 $database = "cocktail_website";
-
 
 $conn = new mysqli($host, $user, $password, $database);
 

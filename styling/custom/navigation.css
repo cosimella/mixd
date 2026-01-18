@@ -1,71 +1,67 @@
+/* --- NAVBAR BRAND & LOGO --- */
+.navbar-brand { 
+    font-size: 1.4rem; 
+    font-weight: 700; 
+    color: var(--secondary-accent) !important;
+}
 
+.navbar-logo { 
+    height: 40px; 
+}
+
+/* --- NAV LINKS (HAUPTMENÜ) --- */
 .nav-link {
     color: var(--secondary-accent) !important;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600; 
+    font-weight: 600;
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
 }
 
 .nav-link:hover, 
-.nav-link:focus, 
 .nav-link.active {
     color: var(--primary-accent) !important;
 }
 
+/* --- DROPDOWNS (PROFIL & KATEGORIEN) --- */
 .dropdown-menu {
-    border-radius: 15px; 
+    border-radius: 15px;
     border: none;
-    box-shadow: 0 10px 25px rgba(94, 67, 82, 0.1) !important; 
+    box-shadow: 0 10px 25px rgba(94, 67, 82, 0.1) !important;
+    padding: 0.5rem;
 }
 
 .dropdown-item {
-    color: var(--secondary-accent) !important;
-    font-family: 'Quicksand', sans-serif;
+    color: var(--secondary-accent) !important; 
     font-weight: 500;
-    border-radius: 10px; 
+    border-radius: 10px;
+    transition: 0.2s;
     padding: 0.6rem 1.2rem;
-    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
 }
 
-.dropdown-item:hover,
-.dropdown-item:active, 
-.dropdown-item:focus,
-.dropdown-item.active {
+/* Icons innerhalb der Dropdown-Links (z.B. Herz, Journal) */
+.dropdown-item i {
+    color: var(--primary-accent); 
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.dropdown-item:hover {
     background-color: #fff5f4 !important; 
     color: var(--primary-accent) !important;
-    box-shadow: none !important;
-    outline: none !important;
 }
 
-.navbar-brand { 
-    color: var(--secondary-accent) !important; 
-    font-weight: 700;
-    font-size: 1.4rem;
-}
-
-.navbar-brand span {
-    color: var(--primary-accent); 
-}
-
-.input-group-sm .form-control {
-    font-family: 'Quicksand', sans-serif;
+/* --- USER PROFILBILD --- */
+.nav-profile-img, 
+.nav-profile-placeholder {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
     border: 1px solid #eee;
 }
 
-.dropdown-toggle::after {
-    color: var(--primary-accent);
-    vertical-align: 0.2em;
-}
-
-.brand-text {
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 300;         
-    font-size: 2.2rem;     
-    color: var(--secondary-accent);
-    letter-spacing: -1px;     
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    text-transform: uppercase; 
+.navbar a {
+    text-decoration: none !important;
 }

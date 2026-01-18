@@ -1,5 +1,4 @@
 <?php
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 } 
@@ -7,18 +6,15 @@ if (session_status() == PHP_SESSION_NONE) {
 $navigationProfilePicture = "resources/images/placeholders/default_profile.png";
 
 if (isset($_SESSION['userid'])) {
-
     include_once "util/dbutil.php"; 
     $id = $_SESSION['userid']; 
 
     $stmt = $conn->prepare("SELECT profile_image FROM users WHERE userid = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
-
     $result = $stmt->get_result();
-
     $row = $result->fetch_array(); 
-
+    
     if ($row && !empty($row['profile_image'])) {
         $navigationProfilePicture = $row['profile_image'];
     }
@@ -28,8 +24,8 @@ if (isset($_SESSION['userid'])) {
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-2">
     <div class="container">
         <a class="navbar-brand fw-bold d-flex align-items-center" href="index.php">
-            <img src="resources/images/logos/mixdXschatten.png" alt="MIXD Logo" style="height: 40px;">
-            <span class="ms-2" style="letter-spacing: 1px;">MIXD</span>
+            <img src="resources/images/logos/mixdXschatten.png" alt="MIXD Logo" class="navbar-logo">
+            <span class="ms-2 navbar-brand-text">MIXD</span>
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
@@ -45,11 +41,8 @@ if (isset($_SESSION['userid'])) {
                     <ul class="dropdown-menu border-0 shadow-sm mt-2">
                         <li><a class="dropdown-item" href="categories.php?kategorie=Klassiker">Klassiker</a></li>
                         <li><a class="dropdown-item" href="categories.php?kategorie=Erfrischend">Erfrischend</a></li>
-                        <li><a class="dropdown-item" href="categories.php?kategorie=Fruchtig">Fruchtig</a></li>
                         <li><a class="dropdown-item" href="categories.php?kategorie=Alkoholfrei">Alkoholfrei</a></li>
                         <li><a class="dropdown-item" href="categories.php?kategorie=Sommer">Sommer</a></li>
-                        <li><a class="dropdown-item" href="categories.php?kategorie=Winter">Winter</a></li>
-                        <li><a class="dropdown-item" href="categories.php?kategorie=Party">Party</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item small text-muted" href="categories.php">Alle Rezepte</a></li>
                     </ul>
@@ -68,8 +61,8 @@ if (isset($_SESSION['userid'])) {
 
             <div class="d-flex align-items-center">
                 <form class="d-flex me-3" action="search.php" method="GET">
-                    <div class="input-group input-group-sm bg-light rounded-pill border overflow-hidden">
-                        <input class="form-control border-0 bg-light px-3" type="search" name="query" placeholder="Drink suchen...">
+                    <div class="input-group input-group-sm search-group-custom">
+                        <input class="form-control search-input-custom" type="search" name="query" placeholder="Drink suchen...">
                         <button class="btn btn-light border-0" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
@@ -77,13 +70,13 @@ if (isset($_SESSION['userid'])) {
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" data-bs-toggle="dropdown">
                         <?php if (isset($_SESSION['userid'])): ?>
-                            <img src="<?php echo htmlspecialchars($navigationProfilePicture); ?>" alt="Profilbild" 
-                                 class="rounded-circle border" style="width: 35px; height: 35px; object-fit: cover;">
+                            <img src="<?= htmlspecialchars($navigationProfilePicture) ?>" alt="Profil" 
+                                 class="rounded-circle border nav-profile-img">
                             <span class="ms-2 d-none d-sm-inline small fw-bold">
-                                <?php echo htmlspecialchars($_SESSION['benutzername'] ?? 'Profil'); ?>
+                                <?= htmlspecialchars($_SESSION['user'] ?? 'Profil') ?>
                             </span>
                         <?php else: ?>
-                            <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                            <div class="rounded-circle border nav-profile-placeholder">
                                 <i class="bi bi-person"></i>
                             </div>
                         <?php endif; ?>
@@ -91,7 +84,7 @@ if (isset($_SESSION['userid'])) {
                     
                     <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-3">
                         <?php if (isset($_SESSION['userid'])): ?>
-                            <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Mein Profil</a></li>
+                            <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Profil</a></li>
                             <li><a class="dropdown-item" href="my_recipes.php"><i class="bi bi-journal-text me-2"></i>Meine Rezepte</a></li>
                             <li><a class="dropdown-item" href="favorites.php"><i class="bi bi-heart me-2"></i>Merkliste</a></li>
                             <li><hr class="dropdown-divider"></li>
