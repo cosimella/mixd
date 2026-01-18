@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashedPassword = password_hash($passwordRaw, PASSWORD_DEFAULT);
             $defaultPfp = "resources/images/placeholders/default_profile.png";
 
-            // Rolle 1 = Standard User
             $sqlInsert = "INSERT INTO users (benutzername, email, passwort, role, profile_image) VALUES (?, ?, ?, 1, ?)";
             $stmtInsert = $conn->prepare($sqlInsert);
             $stmtInsert->bind_param("ssss", $usernameInput, $emailInput, $hashedPassword, $defaultPfp);
