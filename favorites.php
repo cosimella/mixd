@@ -1,13 +1,11 @@
 <?php
 session_start();
-// Zentrale Datenbankverbindung einbinden
 include "util/dbutil.php"; 
 
 include "util/auth_check.php";
 
 $currentUserId = $_SESSION['userid'];
 
-// 2. Favoriten laden (Verknüpfung von Favoriten-Tabelle, Rezepten und Bildern)
 $queryFavoriteRecipes = "SELECT r.recipe_id, r.recipe_name, ri.image_path 
         FROM favorites f
         JOIN recipes r ON f.recipe_id = r.recipe_id
@@ -24,7 +22,6 @@ if ($statementFavorites) {
     $statementFavorites->execute();
     $queryResult = $statementFavorites->get_result();
     
-    // Daten zeilenweise in unsere Liste übertragen
     while ($recipeRow = $queryResult->fetch_assoc()) {
         $favoriteRecipesList[] = $recipeRow;
     }
@@ -57,7 +54,7 @@ if ($statementFavorites) {
                 
                 <?php 
                 $showIngredients = false; 
-                // Wir nutzen $rezept als Variable, da die recipe-card.php diesen Namen erwartet
+            
                 foreach ($favoriteRecipesList as $rezept) {
                     include "includes/recipe-card.php"; 
                 } 

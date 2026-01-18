@@ -5,26 +5,21 @@ include "util/auth_check.php";
 
 $currentUserId = $_SESSION['userid'];
 
-// 1. Benutzerdaten & Barkeeper-Status laden
 $queryUserProfile = "SELECT benutzername, email, profile_image, is_barkeeper FROM users WHERE userid = $currentUserId";
 $userResult = $conn->query($queryUserProfile);
 $userData = $userResult->fetch_assoc();
 
-// 2. Status der Barkeeper-Bewerbung prüfen
 $queryApplicationStatus = "SELECT status FROM barkeeper_applications WHERE userid = $currentUserId ORDER BY created_at DESC LIMIT 1";
 $applicationResult = $conn->query($queryApplicationStatus);
 $verificationStatus = ($applicationResult->num_rows > 0) ? $applicationResult->fetch_assoc()['status'] : null;
 
-// 3. Basis-SQL für Rezeptkarten (mit Join für den Barkeeper-Status des Erstellers)
 $sqlRecipeBase = "SELECT r.recipe_id, r.recipe_name, ri.image_path, u.is_barkeeper 
                   FROM recipes r 
                   JOIN users u ON r.created_by = u.userid 
                   LEFT JOIN recipe_images ri ON r.recipe_id = ri.recipe_id ";
 
-// Favoriten (Merkliste) laden
 $favoriteRecipes = $conn->query($sqlRecipeBase . "JOIN favorites f ON r.recipe_id = f.recipe_id WHERE f.user_id = $currentUserId GROUP BY r.recipe_id LIMIT 4")->fetch_all(MYSQLI_ASSOC);
 
-// Eigene erstellte Rezepte laden
 $ownRecipes = $conn->query($sqlRecipeBase . "WHERE r.created_by = $currentUserId GROUP BY r.recipe_id LIMIT 4")->fetch_all(MYSQLI_ASSOC);
 ?>
 

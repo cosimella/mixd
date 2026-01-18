@@ -1,23 +1,21 @@
 <?php
 session_start();
-
-// Einbinden der zentralen Datenbank-Konfiguration
-// Auch wenn hier keine Daten geladen werden, sichert dies die Konsistenz der Applikationsstruktur.
-include "util/dbutil.php"; 
 ?>
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
+
     <?php 
-    // Laden der Meta-Tags, CSS-Dateien und Bootstrap-Ressourcen
     include "includes/head-includes.php"; 
     ?>
+
     <title>Datenschutz - MIXD</title>
 </head>
+
 <body class="bg-light">
+
 <?php 
-// Die Navigation wird modular eingebunden, um Änderungen zentral verwalten zu können.
 include "includes/navbar.php"; 
 ?>
 
@@ -89,8 +87,8 @@ include "includes/navbar.php";
 </main>
 
 <?php 
-// Globaler Footer für rechtliche Links und Copyright-Infos
 include "includes/footer.php"; 
 ?>
+
 </body>
 </html>

@@ -2,24 +2,19 @@
 session_start();
 include "util/dbutil.php"; 
 
-// Fehleranzeige für die Entwicklung (Wichtig für das Debugging)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-// KEIN auth_check hier, damit Gäste sich registrieren können!
 
 $errorMessage = "";
 $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
-    // Datenbereinigung
     $usernameInput = trim($_POST['username']);
     $emailInput    = trim($_POST['email']);
     $passwordRaw   = $_POST['password'];
     $passwordRepeat = $_POST['password_confirm'];
 
-    // --- SCHRITT 1: Validierung ---
     if (empty($usernameInput) || empty($emailInput) || empty($passwordRaw)) {
         $errorMessage = "Bitte fülle alle Felder aus!";
     } 
@@ -33,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errorMessage = "Das Passwort muss mindestens 8 Zeichen haben!";
     } 
     else {
-        // --- SCHRITT 2: Verfügbarkeit prüfen ---
+        
         $queryCheckAvailability = "SELECT userid FROM users WHERE benutzername = ? OR email = ? LIMIT 1";
         $statementUserLookup = $conn->prepare($queryCheckAvailability);
         $statementUserLookup->bind_param("ss", $usernameInput, $emailInput);
@@ -43,16 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($lookupResult->num_rows > 0) {
             $errorMessage = "Benutzername oder E-Mail wird bereits verwendet!";
         } else {
-            // --- SCHRITT 3: Neuen User anlegen ---
-            // PASSWORT HASHING (Pflicht für 10 Punkte Security)
+           
             $hashedPassword = password_hash($passwordRaw, PASSWORD_DEFAULT);
             $defaultProfileImage = "resources/images/placeholders/default_profile.png";
-
-            // Spaltennamen korrigiert auf 'role' und 'profile_image'
             $queryInsertUser = "INSERT INTO users (benutzername, email, passwort, role, profile_image) VALUES (?, ?, ?, 1, ?)";
             $statementExecution = $conn->prepare($queryInsertUser);
-            
-            // Wir binden 4 Strings (s s s s), da die '1' für die Rolle direkt im SQL steht
             $statementExecution->bind_param("ssss", $usernameInput, $emailInput, $hashedPassword, $defaultProfileImage);
             
             if ($statementExecution->execute()) {

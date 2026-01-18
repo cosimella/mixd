@@ -6,7 +6,6 @@ include "util/auth_check.php";
 $currentUserId = $_SESSION['userid'];
 $targetRecipeId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// 1. SICHERHEITS-CHECK: Gehört das Rezept dem User?
 $queryBaseData = "SELECT * FROM recipes WHERE recipe_id = ? AND created_by = ?";
 $statementBase = $conn->prepare($queryBaseData);
 $statementBase->bind_param("ii", $targetRecipeId, $currentUserId);
@@ -17,26 +16,21 @@ if (!$recipeData) {
     die("Kein Zugriff auf dieses Rezept.");
 }
 
-// 2. SPEICHER-LOGIK
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
-    
     $recipeName = $_POST['recipe_name'];
     $beschreibung = $_POST['beschreibung'];
     $anleitung = $_POST['anleitung'];
     $selectedCategories = $_POST['categories'] ?? [];
 
-    // A. Basis-Daten updaten
     $updateStmt = $conn->prepare("UPDATE recipes SET recipe_name = ?, beschreibung = ?, anleitung = ? WHERE recipe_id = ?");
     $updateStmt->bind_param("sssi", $recipeName, $beschreibung, $anleitung, $targetRecipeId);
     $updateStmt->execute();
 
-    // B. Kategorien synchronisieren
     $conn->query("DELETE FROM recipe_categories WHERE recipe_id = $targetRecipeId");
     foreach ($selectedCategories as $catId) {
         $conn->query("INSERT INTO recipe_categories (recipe_id, category_id) VALUES ($targetRecipeId, $catId)");
     }
 
-    // C. Zutaten synchronisieren
     $conn->query("DELETE FROM recipe_ingredients WHERE recipe_id = $targetRecipeId");
     $amounts = $_POST['amount'] ?? [];
     $units = $_POST['unit'] ?? [];
@@ -61,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
         }
     }
 
-    // D. Bilder löschen
     if (!empty($_POST['delete_images'])) {
         foreach ($_POST['delete_images'] as $imgId) {
             $imgId = (int)$imgId;
@@ -74,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
         }
     }
 
-    // E. Neue Bilder hochladen
     if (!empty($_FILES['new_images']['name'][0])) {
         $uploadPath = 'resources/uploads/recipes/';
         foreach ($_FILES['new_images']['tmp_name'] as $index => $tmpName) {
@@ -88,12 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
             }
         }
     }
-
     header("Location: recipe.php?id=$targetRecipeId&msg=updated");
     exit;
 }
 
-// Daten für die Anzeige laden
 $queryAllCategories = $conn->query("SELECT * FROM categories ORDER BY category_name ASC");
 $categoryList = $queryAllCategories->fetch_all(MYSQLI_ASSOC);
 
@@ -119,11 +109,9 @@ $imagesData = $queryImages->fetch_all(MYSQLI_ASSOC);
 </head>
 <body class="bg-light">
     <?php include "includes/navbar.php"; ?>
-
     <main class="container py-5">
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="row g-4">
-                
                 <div class="col-md-8">
                     <div class="card border-0 shadow-sm p-4 rounded-4 mb-4">
                         <h5 class="fw-bold mb-3">Basis-Infos</h5>
@@ -143,9 +131,7 @@ $imagesData = $queryImages->fetch_all(MYSQLI_ASSOC);
                             <?php foreach ($categoryList as $categoryItem): ?>
                             <div class="col-6 col-md-4 mb-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="categories[]" 
-                                           value="<?php echo $categoryItem['category_id']; ?>" 
-                                           <?php echo in_array($categoryItem['category_id'], $selectedCategoryIds) ? 'checked' : ''; ?>>
+                                    <input class="form-check-input" type="checkbox" name="categories[]" value="<?php echo $categoryItem['category_id']; ?>" <?php echo in_array($categoryItem['category_id'], $selectedCategoryIds) ? 'checked' : ''; ?>>
                                     <label class="form-check-label small"><?php echo $categoryItem['category_name']; ?></label>
                                 </div>
                             </div>
@@ -199,15 +185,11 @@ $imagesData = $queryImages->fetch_all(MYSQLI_ASSOC);
                         <label class="small fw-bold text-muted mb-2">NEUE BILDER</label>
                         <input type="file" name="new_images[]" class="form-control form-control-sm border-0 bg-light" multiple>
                     </div>
-
-                    <button type="submit" name="save_recipe" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow">
-                        ÄNDERUNGEN SPEICHERN
-                    </button>
+                    <button type="submit" name="save_recipe" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow">ÄNDERUNGEN SPEICHERN</button>
                 </div>
             </div>
         </form>
     </main>
-
     <?php include "includes/footer.php"; ?>
 </body>
 </html>

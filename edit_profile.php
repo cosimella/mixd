@@ -7,20 +7,16 @@ $authenticatedUserId = $_SESSION['userid'];
 $errorMessage = "";
 $successMessage = "";
 
-// 1. AKTUELLE BENUTZERDATEN LADEN
 $queryUser = $conn->prepare("SELECT benutzername, email, profile_image FROM users WHERE userid = ?");
 $queryUser->bind_param("i", $authenticatedUserId);
 $queryUser->execute();
 $userData = $queryUser->get_result()->fetch_assoc();
-
 $profilePreviewPath = !empty($userData['profile_image']) ? $userData['profile_image'] : "resources/images/placeholders/default_profile.png";
 
-// 2. VERARBEITUNG DER ÄNDERUNGEN
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $updatedUsername = trim($_POST['benutzername']);
     $updatedEmail    = trim($_POST['email']);
     
-    // Textdaten aktualisieren
     $updateText = $conn->prepare("UPDATE users SET benutzername = ?, email = ? WHERE userid = ?");
     $updateText->bind_param("ssi", $updatedUsername, $updatedEmail, $authenticatedUserId);
     
@@ -29,19 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['benutzername'] = $updatedUsername;
     }
 
-    // --- BILD UPLOAD LOGIK (Sicherheits-Check) ---
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
         $fileExtension = strtolower(pathinfo($_FILES['profile_pic']['name'], PATHINFO_EXTENSION));
 
-        // Validierung des Dateityps (Wichtig für Security-Punkte!)
         if (in_array($fileExtension, $allowedExtensions)) {
             $uploadFolder = 'resources/uploads/profiles/';
             $uniqueFileName = "user_" . $authenticatedUserId . "_" . time() . "." . $fileExtension;
             $destination = $uploadFolder . $uniqueFileName;
 
             if (move_uploaded_file($_FILES['profile_pic']['tmp_name'], $destination)) {
-                // Pfad-Update mit Prepared Statement (statt direktem Query)
+              
                 $updateImage = $conn->prepare("UPDATE users SET profile_image = ? WHERE userid = ?");
                 $updateImage->bind_param("si", $destination, $authenticatedUserId);
                 $updateImage->execute();

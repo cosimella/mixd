@@ -1,38 +1,33 @@
 <?php
 session_start();
 include "util/dbutil.php";
-include "util/auth_check.php"; // Sicherstellen, dass der User eingeloggt ist
+include "util/auth_check.php"; 
 
 $currentUserId = $_SESSION['userid'];
 $errorMessage = "";
 
-// --- 1. LOGIK: WENN DAS FORMULAR ABGESCHICKT WURDE ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $applicantFullName = trim($_POST['full_name']);
 
-    // Prüfung des Datei-Uploads
     if (isset($_FILES['doc']) && $_FILES['doc']['error'] === 0) {
         $verificationUploadDir = 'resources/uploads/verify/';
         
-        // Dateiendung extrahieren und prüfen
         $fileExtension = strtolower(pathinfo($_FILES['doc']['name'], PATHINFO_EXTENSION));
         $allowedFileTypes = ['jpg', 'jpeg', 'png', 'pdf'];
 
         if (in_array($fileExtension, $allowedFileTypes)) {
-            // Eindeutigen Dateinamen generieren (Präfix + UserID + Zeitstempel)
+    
             $uniqueFileName = "verify_" . $currentUserId . "_" . time() . "." . $fileExtension;
             $destinationPath = $verificationUploadDir . $uniqueFileName;
 
-            // Datei vom temporären Ordner in den Zielordner verschieben
             if (move_uploaded_file($_FILES['doc']['tmp_name'], $destinationPath)) {
                 
-                // In Datenbank eintragen (Status 'pending' bedeutet: Wartet auf Prüfung)
                 $insertQuery = "INSERT INTO barkeeper_applications (userid, full_name, document_path, status) VALUES (?, ?, ?, 'pending')";
                 $statementApplication = $conn->prepare($insertQuery);
                 $statementApplication->bind_param("iss", $currentUserId, $applicantFullName, $destinationPath);
                 
                 if ($statementApplication->execute()) {
-                    // Erfolg: Umleitung zum Profil mit Erfolgs-Parameter in der URL
+                
                     header("Location: profile.php?msg=applied");
                     exit;
                 } else {
@@ -50,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Doppeltes Senden verhindern: Prüfen, ob bereits ein Antrag in Prüfung ('pending') ist
 $queryPendingCheck = $conn->query("SELECT status FROM barkeeper_applications WHERE userid = $currentUserId AND status = 'pending'");
+
 if ($queryPendingCheck->num_rows > 0) {
     header("Location: profile.php");
     exit;

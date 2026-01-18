@@ -1,32 +1,22 @@
 <?php
 session_start();
-// Einbinden der Datenbank-Konfiguration
 include "util/dbutil.php";
 
-// 1. GLOBALE DATEN LADEN (z.B. für den Hero-Banner)
 $queryCountRecipes = $conn->query("SELECT COUNT(*) FROM recipes");
 $countData = $queryCountRecipes->fetch_row();
 $totalAvailableRecipes = $countData[0];
 
-// 2. SQL-BASISSTRUKTUR DEFINIEREN
-// Da wir für alle Sektionen fast die gleichen Daten brauchen (Name, Bild, User-Status), 
-// definieren wir ein Basis-SQL, um Schreibarbeit und Fehler zu vermeiden.
 $sqlRecipeBaseTemplate = "SELECT r.recipe_id, r.recipe_name, ri.image_path, u.is_barkeeper 
                           FROM recipes r 
                           JOIN users u ON r.created_by = u.userid
                           LEFT JOIN recipe_images ri ON r.recipe_id = ri.recipe_id 
                           GROUP BY r.recipe_id ";
 
-// 3. VERSCHIEDENE DATENSTRÖME GENERIEREN
-// Beliebte Rezepte (hier einfach die ersten 8)
 $resultPopularFeed = $conn->query($sqlRecipeBaseTemplate . "LIMIT 8");
-
-// Neueste Rezepte (Sortierung nach ID absteigend)
 $resultNewestFeed  = $conn->query($sqlRecipeBaseTemplate . "ORDER BY r.recipe_id DESC LIMIT 4");
-
-// Zufällige Entdeckungen (Nutzt die SQL-Funktion RAND())
 $resultRandomDiscovery = $conn->query($sqlRecipeBaseTemplate . "ORDER BY RAND() LIMIT 3");
 ?>
+
 <!doctype html>
 <html lang="de">
 

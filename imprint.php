@@ -1,23 +1,17 @@
 <?php
-// Sitzung starten, um z.B. den Login-Status in der Navbar anzuzeigen
 session_start();
-
-// Einbinden der zentralen Datenbank-Konfiguration
-include "util/dbutil.php"; 
 ?>
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <?php 
-    // Zentrales Einbinden von Meta-Daten, Bootstrap und CSS-Ressourcen
     include "includes/head-includes.php"; 
     ?>
     <title>Impressum - MIXD</title>
 </head>
 <body class="bg-light">
 <?php 
-// Die Navigation wird modular geladen, damit Änderungen überall gleichzeitig wirken
 include "includes/navbar.php"; 
 ?>
 

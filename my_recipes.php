@@ -5,7 +5,6 @@ include "util/auth_check.php";
 
 $currentUserId = $_SESSION['userid'];
 
-// SQL: Jetzt mit Durchschnittsbewertung (AVG), damit die Karte Sterne zeigt
 $sqlOwnRecipes = "SELECT 
                     r.recipe_id, 
                     r.recipe_name, 

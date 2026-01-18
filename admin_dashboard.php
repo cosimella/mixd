@@ -1,22 +1,20 @@
 <?php
 session_start();
-include "util/dbutil.php";
 
+include "util/dbutil.php";
 include "util/admin_check.php";
-// Welchen Tab/Bereich schauen wir uns an?
+
 $activeTab = "rezepte";
 if (isset($_GET['tab'])) {
     $activeTab = $_GET['tab'];
 }
 
-// 2. GLOBALE STATISTIKEN FÜR DAS DASHBOARD
 $queryRecipeCount = $conn->query("SELECT COUNT(*) FROM recipes");
 $totalRecipes = $queryRecipeCount->fetch_row()[0];
 
 $queryUserCount = $conn->query("SELECT COUNT(*) FROM users");
 $totalUsers = $queryUserCount->fetch_row()[0];
 
-// Ausstehende Barkeeper-Anträge zählen
 $queryPendingApps = $conn->query("SELECT COUNT(*) FROM barkeeper_applications WHERE status = 'pending'");
 $pendingApplicationsCount = $queryPendingApps->fetch_row()[0];
 ?>
@@ -46,7 +44,7 @@ $pendingApplicationsCount = $queryPendingApps->fetch_row()[0];
                 </a>
             </div>
             
-            <?php if($_SESSION['user_role'] == 3): // Administrator-exklusive Bereiche ?>
+            <?php if($_SESSION['user_role'] == 3):?> 
             <div class="col-md-4">
                 <a href="admin_dashboard.php?tab=users" class="btn <?php echo ($activeTab == 'users' ? 'btn-primary' : 'btn-white shadow-sm'); ?> w-100 p-3 rounded-4 border-0">
                     <i class="bi bi-people d-block fs-3"></i>
@@ -121,7 +119,7 @@ $pendingApplicationsCount = $queryPendingApps->fetch_row()[0];
                             </span>
                         </td>
                         <td class="text-end">
-                            <?php if($userRow['userid'] != $_SESSION['userid']): // Man kann sich nicht selbst löschen ?>
+                            <?php if($userRow['userid'] != $_SESSION['userid']): ?>
                                 <a href="util/admin_actions.php?action=delete_user&id=<?php echo $userRow['userid']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Benutzer wirklich löschen?')">Löschen</a>
                             <?php endif; ?>
                         </td>
