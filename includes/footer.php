@@ -1,15 +1,16 @@
 <footer id="main-app-footer" class="mt-auto py-5 bg-white border-top">
+
     <div class="container">
         <div class="row align-items-center">
             
             <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
                 <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-2">
                     <img src="resources/images/logos/mixdXpink.png" alt="MIXD Branding" style="height: 24px;" class="me-2">
-                    <h5 class="fw-bold mb-0" style="letter-spacing: 1px;">MIXD</h5>
+                    <h5 class="fw-bold mb-0">MIXD</h5>
                 </div>
-                <p class="small text-muted mb-0">Deine exklusive Cocktail-Community.</p>
+                <p class="small text-muted mb-0">Deine Cocktail-Community.</p>
                 <p class="text-muted opacity-75 mt-1" style="font-size: 0.7rem;">
-                    &copy; <?php echo date("Y"); ?> MIXD Projects. Alle Rechte vorbehalten.
+                    &copy; <?php echo date("Y"); ?> MIXD - Alle Rechte vorbehalten.
                 </p>
             </div>
 
@@ -32,8 +33,4 @@
 </footer>
 
 <script src="styling/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <script src="js/main.js"></script>
-
-</body>
-</html>
