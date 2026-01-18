@@ -1,23 +1,26 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-}
+} 
 
 $navigationProfilePicture = "resources/images/placeholders/default_profile.png";
 
 if (isset($_SESSION['userid'])) {
-    include_once "util/dbutil.php";
-    $currentSessionUserId = $_SESSION['userid'];
 
-    $queryNavUser = $conn->prepare("SELECT profile_image FROM users WHERE userid = ?");
-    $queryNavUser->bind_param("i", $currentSessionUserId);
-    $queryNavUser->execute();
-    $navUserResult = $queryNavUser->get_result();
-    
-    if ($navUserResult && $userDataRow = $navUserResult->fetch_assoc()) {
-        if (!empty($userDataRow['profile_image'])) {
-            $navigationProfilePicture = $userDataRow['profile_image'];
-        }
+    include_once "util/dbutil.php"; 
+    $id = $_SESSION['userid']; 
+
+    $stmt = $conn->prepare("SELECT profile_image FROM users WHERE userid = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_array(); 
+
+    if ($row && !empty($row['profile_image'])) {
+        $navigationProfilePicture = $row['profile_image'];
     }
 }
 ?>

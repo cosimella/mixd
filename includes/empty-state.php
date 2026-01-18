@@ -1,15 +1,16 @@
 <div class="col-12">
-    <div class="empty-state-container">
+    <div class="empty-state-container text-center py-5">
         
-        <i class="bi <?php echo $displayIcon; ?> empty-state-icon"></i>
+        <i class="bi <?= $displayIcon ?> empty-state-icon"></i>
         
         <h4 class="empty-state-title">
-            <?php echo $displayTitle; ?>
+            <?= $displayTitle ?>
         </h4>
         
         <p class="empty-state-text">
-            <?php echo $displayText; ?>
-        </p>
+            <?= $displayText ?> 
+
+        </p>                        
         
         <div class="mt-4">
             <a href="index.php" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
