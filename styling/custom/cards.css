@@ -57,3 +57,33 @@
 .cat-card:hover .fw-bold {
     color: #ffffff !important;
 }
+
+
+/* Styling für leere Zustände (Empty States) */
+.empty-state-container {
+    padding: 3rem;
+    background-color: #ffffff;
+    border-radius: 20px; /* Gleiche Abrundung wie dein Karussell */
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 10px 30px rgba(94, 67, 82, 0.05); /* Dezenter als beim Karussell */
+    text-align: center;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    opacity: 0.3;
+    color: #6c757d; /* Standard muted grau */
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.empty-state-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.empty-state-text {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}

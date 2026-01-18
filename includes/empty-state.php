@@ -1,15 +1,13 @@
-<div class="col-12 text-center py-5">
-    <div class="p-5 bg-white rounded-4 shadow-sm border">
+<div class="col-12">
+    <div class="empty-state-container">
         
-        <div class="mb-4">
-            <i class="bi <?php echo $displayIcon; ?> text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
-        </div>
+        <i class="bi <?php echo $displayIcon; ?> empty-state-icon"></i>
         
-        <h4 class="fw-bold">
+        <h4 class="empty-state-title">
             <?php echo $displayTitle; ?>
         </h4>
         
-        <p class="text-muted">
+        <p class="empty-state-text">
             <?php echo $displayText; ?>
         </p>
         
@@ -18,5 +16,6 @@
                 Zurück zur Übersicht
             </a>
         </div>
+        
     </div>
 </div>

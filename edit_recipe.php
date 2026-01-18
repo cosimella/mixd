@@ -17,7 +17,7 @@ if (!$recipeData) {
     die("Kein Zugriff auf dieses Rezept.");
 }
 
-// 2. SPEICHER-LOGIK (Wird ausgeführt, wenn "Speichern" geklickt wird)
+// 2. SPEICHER-LOGIK
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
     
     $recipeName = $_POST['recipe_name'];
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
     $updateStmt->bind_param("sssi", $recipeName, $beschreibung, $anleitung, $targetRecipeId);
     $updateStmt->execute();
 
-    // B. Kategorien synchronisieren (Alte löschen, neue rein)
+    // B. Kategorien synchronisieren
     $conn->query("DELETE FROM recipe_categories WHERE recipe_id = $targetRecipeId");
     foreach ($selectedCategories as $catId) {
         $conn->query("INSERT INTO recipe_categories (recipe_id, category_id) VALUES ($targetRecipeId, $catId)");
@@ -44,32 +44,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
 
     foreach ($ingredients as $idx => $ingName) {
         if (!empty(trim($ingName))) {
-            // Zutat-ID finden oder neu anlegen
-            $conn->query("INSERT IGNORE INTO ingredients (ingredient_name) VALUES ('$ingName')");
-            $res = $conn->query("SELECT ingredient_id FROM ingredients WHERE ingredient_name = '$ingName'");
-            $ingId = $res->fetch_assoc()['ingredient_id'];
+            $stmtIng = $conn->prepare("INSERT IGNORE INTO ingredients (ingredient_name) VALUES (?)");
+            $stmtIng->bind_param("s", $ingName);
+            $stmtIng->execute();
+            
+            $res = $conn->prepare("SELECT ingredient_id FROM ingredients WHERE ingredient_name = ?");
+            $res->bind_param("s", $ingName);
+            $res->execute();
+            $ingId = $res->get_result()->fetch_assoc()['ingredient_id'];
             
             $amt = floatval($amounts[$idx]);
             $unt = $units[$idx];
-            $conn->query("INSERT INTO recipe_ingredients (recipe_id, ingredient_id, amount, unit) VALUES ($targetRecipeId, $ingId, $amt, '$unt')");
+            $stmtLink = $conn->prepare("INSERT INTO recipe_ingredients (recipe_id, ingredient_id, amount, unit) VALUES (?, ?, ?, ?)");
+            $stmtLink->bind_param("iids", $targetRecipeId, $ingId, $amt, $unt);
+            $stmtLink->execute();
         }
     }
 
-    // D. BILDER LÖSCHEN
+    // D. Bilder löschen
     if (!empty($_POST['delete_images'])) {
         foreach ($_POST['delete_images'] as $imgId) {
             $imgId = (int)$imgId;
-            // Pfad holen, um Datei physisch zu löschen
             $res = $conn->query("SELECT image_path FROM recipe_images WHERE image_id = $imgId");
             $pathData = $res->fetch_assoc();
             if ($pathData && file_exists($pathData['image_path'])) {
-                unlink($pathData['image_path']); // Datei vom Server löschen
+                unlink($pathData['image_path']);
             }
             $conn->query("DELETE FROM recipe_images WHERE image_id = $imgId");
         }
     }
 
-    // E. NEUE BILDER HOCHLADEN
+    // E. Neue Bilder hochladen
     if (!empty($_FILES['new_images']['name'][0])) {
         $uploadPath = 'resources/uploads/recipes/';
         foreach ($_FILES['new_images']['tmp_name'] as $index => $tmpName) {
@@ -84,12 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_recipe'])) {
         }
     }
 
-    // Erfolg! Seite neu laden
     header("Location: recipe.php?id=$targetRecipeId&msg=updated");
     exit;
 }
 
-// (Hier folgen deine bestehenden Querys für die Anzeige...)
+// Daten für die Anzeige laden
 $queryAllCategories = $conn->query("SELECT * FROM categories ORDER BY category_name ASC");
 $categoryList = $queryAllCategories->fetch_all(MYSQLI_ASSOC);
 
@@ -204,26 +208,6 @@ $imagesData = $queryImages->fetch_all(MYSQLI_ASSOC);
         </form>
     </main>
 
-    <script>
-        function addNewIngredientRow() {
-            let listContainer = document.getElementById('zutaten-liste');
-            let rowWrapper = document.createElement('div');
-            rowWrapper.className = 'row g-2 mb-2 align-items-center zutat-reihe';
-            rowWrapper.innerHTML = `
-                <div class="col-2"><input type="number" step="0.1" name="amount[]" class="form-control border-0 bg-light"></div>
-                <div class="col-3">
-                    <select name="unit[]" class="form-select border-0 bg-light">
-                        <option value="cl">cl</option>
-                        <option value="ml">ml</option>
-                        <option value="Stück">Stück</option>
-                        <option value="BL">BL</option>
-                    </select>
-                </div>
-                <div class="col-6"><input type="text" name="ingredient[]" class="form-control border-0 bg-light"></div>
-                <div class="col-1 text-end"><button type="button" class="btn text-danger p-0" onclick="this.closest('.zutat-reihe').remove()"><i class="bi bi-trash"></i></button></div>
-            `;
-            listContainer.appendChild(rowWrapper);
-        }
-    </script>
+    <?php include "includes/footer.php"; ?>
 </body>
 </html>
