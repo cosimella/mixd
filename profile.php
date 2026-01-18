@@ -1,9 +1,4 @@
 <?php
-/**
- * MIXD - Benutzerprofil (Dashboard)
- * Zweck: Zentrale Übersicht für User-Daten, Favoriten und eigene Kreationen.
- * Konzepte: Relationale Abfragen (JOINs), Status-Management, Komponenteneinbindung.
- */
 
 session_start();
 require_once "util/dbutil.php";

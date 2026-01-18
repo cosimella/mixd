@@ -86,7 +86,6 @@ require_once "util/dbutil.php";
     </main>
 
     <?php 
-    // Footer: Rechtliche Links
     include "includes/footer.php"; 
     ?>
 </body>

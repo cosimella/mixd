@@ -1,6 +1,6 @@
 :root {
-    --primary-accent: #ff6f61;   /* Koralle */
-    --secondary-accent: #5e4352; /* Beere */
+    --primary-accent: #ff6f61;   
+    --secondary-accent: #5e4352; 
     --muted-teal: #587b7f;
     --bg-light: #F7F7F7;
     --text-dark: #5e4352;
@@ -41,9 +41,6 @@ h1, h2, h3, h4, h5, h6 {
 .bg-primary { background-color: var(--primary-accent) !important; }
 .border-primary { border-color: var(--primary-accent) !important; }
 
-/* --- BUTTONS: MIXD BRANDING --- */
-
-/* 1. Haupt-Buttons (Gefüllt) */
 .btn-primary {
     background-color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
@@ -53,7 +50,6 @@ h1, h2, h3, h4, h5, h6 {
     transition: all 0.3s ease;
 }
 
-/* Hover & Focus Zustände für Primary */
 .btn-primary:hover, 
 .btn-primary:focus, 
 .btn-primary:active {
@@ -63,7 +59,6 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 12px rgba(255, 111, 97, 0.3) !important;
 }
 
-/* 2. Outline-Buttons (z.B. Portions-Auswahl) */
 .btn-outline-primary {
     color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
@@ -72,7 +67,6 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-/* Hover & Active Zustände für Outline */
 .btn-outline-primary:hover, 
 .btn-outline-primary:active, 
 .btn-outline-primary:focus,
@@ -83,7 +77,6 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 0 0 0.25rem rgba(255, 111, 97, 0.25) !important;
 }
 
-/* --- GLOBALE LINKS (z.B. "Alles anzeigen", "Passwort vergessen") --- */
 a {
     color: var(--primary-accent); 
     text-decoration: none;
@@ -96,7 +89,6 @@ a:hover {
     text-decoration: underline; 
 }
 
-/* Speziell für Links, die wie "Secondary" wirken sollen */
 .link-muted {
     color: var(--secondary-accent) !important;
     opacity: 0.8;
