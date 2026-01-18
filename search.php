@@ -4,7 +4,6 @@ include "util/dbutil.php";
 
 $searchQuery = "";
 
-// Prüfen, ob ein Suchbegriff über die URL (GET) übergeben wurde
 if (isset($_GET['query'])) {
     $searchQuery = trim($_GET['query']);
 }
@@ -12,10 +11,9 @@ if (isset($_GET['query'])) {
 $searchResults = [];
 
 if ($searchQuery !== "") {
-    // Suchmuster für die SQL-LIKE-Abfrage vorbereiten
+   
     $searchPattern = "%" . $searchQuery . "%";
     
-    // SQL angepasst: Wir laden auch die Durchschnittsbewertung für die Sterne-Anzeige
     $sqlSearchRecipes = "SELECT 
         r.recipe_id, 
         r.recipe_name, 
@@ -71,7 +69,7 @@ if ($searchQuery !== "") {
             <?php if (count($searchResults) > 0): ?>
                 <?php foreach ($searchResults as $rezept): ?> <?php
                     $showIngredients = false;
-                    $showControls = false; // In der Suche keine Bearbeiten-Buttons zeigen
+                    $showControls = false; 
                     include "includes/recipe-card.php";
                     ?>
                 <?php endforeach; ?>
