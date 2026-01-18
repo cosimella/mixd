@@ -1,0 +1,59 @@
+/* Rezeptkarten */
+.rezeptkarte {
+    background-color: #ffffff;
+    border-radius: 20px; /* Etwas runder für Quicksand */
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Sanfterer Übergang */
+    border: 1px solid rgba(0,0,0,0.03); /* Ganz feiner Rahmen statt Schatten-only */
+    box-shadow: 0 4px 12px rgba(94, 67, 82, 0.05); /* Beere-Ton im Schatten */
+}
+
+.rezeptkarte:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(94, 67, 82, 0.12) !important;
+}
+
+/* Bild-Anpassung: Wir runden die oberen Ecken leicht ab */
+.rezeptkarte img { 
+    width: 100%; 
+    height: 250px; 
+    object-fit: cover;
+}
+
+
+/* Kategorie-Karten auf Index */
+.cat-card {
+    transition: all 0.3s ease;
+    border-radius: 20px;
+    background: white;
+    border: 1.5px solid #f0f0f0; /* Sichtbarer Rahmen im Ruhezustand */
+}
+
+/* Icons innerhalb der Kategorie-Karten */
+.cat-card i, 
+.cat-card .bi {
+    color: var(--primary-accent) !important;
+    font-size: 1.5rem; /* Etwas größer für bessere Optik */
+    transition: 0.3s;
+}
+
+/* Der Text innerhalb der Kategorie-Karten */
+.cat-card span, 
+.cat-card .fw-bold {
+    color: var(--secondary-accent);
+    font-weight: 600; /* Quicksand braucht das für die Lesbarkeit */
+}
+
+/* WICHTIG: Der Hover-Zustand (Alles wird Weiß auf Koralle) */
+.cat-card:hover {
+    background-color: var(--primary-accent) !important;
+    border-color: var(--primary-accent) !important;
+    transform: translateY(-3px);
+}
+
+.cat-card:hover i, 
+.cat-card:hover .bi, 
+.cat-card:hover span, 
+.cat-card:hover .fw-bold {
+    color: #ffffff !important;
+}
