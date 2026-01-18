@@ -1,8 +1,4 @@
 <?php
-/**
- * MIXD - Rezept-Detailansicht (Final Version)
- * Fokus: Design-Elemente (Barkeeper Badge & Kreis-Favorit)
- */
 session_start();
 require_once "util/dbutil.php";
 
