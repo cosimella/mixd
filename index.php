@@ -74,7 +74,7 @@ $resRandom = $conn->query($sqlBase . "ORDER BY RAND() LIMIT 3");
         </section>
 
         <section class="mb-5">
-            <h3 class="section-title">Frisch gemixt</h3>
+            <h3 class="section-title">Unsere neuesten Rezepte</h3>
             <div class="row g-4">
                 <?php while ($rezept = $resNewest->fetch_assoc()):
                     include "includes/recipe-card.php";
@@ -83,7 +83,7 @@ $resRandom = $conn->query($sqlBase . "ORDER BY RAND() LIMIT 3");
         </section>
 
         <section class="mb-5 pb-5">
-            <h3 class="section-title">Lust auf ein Abenteuer?</h3>
+            <h3 class="section-title">Zufällige Ideen für dich!</h3>
             <div class="row g-4">
                 <?php
                 while ($rezept = $resRandom->fetch_assoc()):

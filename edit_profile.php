@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ext = strtolower(pathinfo($_FILES['profile_pic']['name'], PATHINFO_EXTENSION));
 
         if (in_array($ext, $allowed)) {
-            $uploadDir = 'resources/uploads/profiles/';
+            $uploadDir = 'resources/uploads/profiles';
             $fileName = "user_" . $idUser . "_" . time() . "." . $ext;
             $destination = $uploadDir . $fileName;
 

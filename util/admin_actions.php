@@ -1,8 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 session_start();
-require_once "util/dbutil.php";
-include "util/admin_check.php"; 
+require_once "dbutil.php";
+include "admin_check.php"; 
 
 
 $action = $_GET['action'] ?? '';

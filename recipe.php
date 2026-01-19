@@ -1,8 +1,4 @@
 <?php
-/**
- * MIXD - Rezept-Detailansicht (Final Version)
- * Fokus: Design-Elemente (Barkeeper Badge & Kreis-Favorit)
- */
 session_start();
 require_once "util/dbutil.php";
 
@@ -99,6 +95,19 @@ if (isset($_SESSION['userid'])) {
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
+
+                    <?php if (count($allImages) > 1): ?>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#recipeCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Zurück</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#recipeCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Weiter</span>
+                        </button>
+                    <?php endif; ?>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-start mb-4">

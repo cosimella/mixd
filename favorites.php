@@ -5,9 +5,10 @@ include "util/auth_check.php";
 
 $currentUserId = $_SESSION['userid'];
 
-$query = "SELECT r.recipe_id, r.recipe_name, ri.image_path 
+$query = "SELECT r.recipe_id, r.recipe_name, ri.image_path, u.is_barkeeper 
           FROM favorites f
           JOIN recipes r ON f.recipe_id = r.recipe_id
+          JOIN users u ON r.created_by = u.userid
           LEFT JOIN recipe_images ri ON r.recipe_id = ri.recipe_id
           WHERE f.user_id = ? 
           GROUP BY r.recipe_id
@@ -17,6 +18,8 @@ $stmt = $conn->prepare($query);
 $favorites = [];
 
 if ($stmt) {
+    $stmt->bind_param("i", $currentUserId); 
+    
     $stmt->execute();
     $res = $stmt->get_result();
     

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullName = trim($_POST['full_name']);
 
     if (isset($_FILES['doc']) && $_FILES['doc']['error'] === 0) {
-        $uploadDir = 'resources/uploads/verify/';
+        $uploadDir = 'resources/uploads/verification';
         
         $ext = strtolower(pathinfo($_FILES['doc']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="mt-4 p-3 bg-white rounded-4 shadow-sm border-start border-primary border-4">
                     <p class="small text-muted mb-0">
-                        <strong>Hinweis:</strong> Nach der Prüfung durch einen Moderator erscheint das blaue Siegel neben deinem Profil.
+                        <strong>Hinweis:</strong> Nach der Prüfung durch einen Moderator erscheint das Siegel neben deinem Profil.
                     </p>
                 </div>
 
